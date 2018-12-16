@@ -54,23 +54,7 @@ class Player(Sprite):
         #pygame.draw.rect(win, (255,0,0), self.footbox, 2)
 
     def hit(self):
-        self.x = 60
-        self.y = 410
         self.walkCount = 0
-        font1 = pygame.font.SysFont('Arial', 100)
-        text = font1.render('-5', 1, (255, 0, 0))
-        win.blit(text, (250 - (text.get_width() / 2), 200))
-        pygame.display.update()
-        i = 0
-        while i < 300:
-            pygame.time.delay(10)
-            i += 1
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    i = 301
-                    pygame.quit()
-        self.jumpCount = 0
-        self.isJump = False
 
     def move_left(self):
         self.x -= self.vel

@@ -1,6 +1,7 @@
 import pygame
 from sprite import Sprite
 
+
 class Platform(Sprite):
     def __init__(self, x, y, width, height, color, vel, end):
         super().__init__(x, y)
@@ -9,15 +10,16 @@ class Platform(Sprite):
         self.color = color
         self.vel = vel
         self.end = end
-        self.path = (self.x, self.end) 
-    
+        self.path = (self.x, self.end)
+
     def draw(self, win):
         self.move()
-        pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height))
-    
+        pygame.draw.rect(win, self.color,
+                         (self.x, self.y, self.width, self.height))
+
     def move(self):
         if self.vel > 0:
-            if self.x  + self.vel < self.path[1]:
+            if self.x + self.vel < self.path[1]:
                 self.x += self.vel
             else:
                 self.vel = self.vel * -1
