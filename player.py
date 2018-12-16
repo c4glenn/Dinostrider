@@ -3,14 +3,12 @@ import pygame
 from sprite import Sprite
 
 
-def load(path, type, extension):
+def load(path, extension):
     total = []
-    if type == 'image':
+    if extension == '.png':
         for x in range(1, 10):
             img_path = os.path.join(path, str(x) + extension)
             total.append(pygame.image.load(img_path))
-    elif type == 'sound':
-        pass
     print(total)
     return total
 
@@ -29,8 +27,8 @@ class Player(Sprite):
         self.footbox = (self.x + 19, self.y + 50, 16, 4)
         self.width = 64
         self.height = 64
-        self.walkRight = load('Images/Dino/Right', 'image', '.png')
-        self.walkLeft = load('Images/Dino/Left', 'image', '.png')
+        self.walkRight = load('Images/Dino/Right', '.png')
+        self.walkLeft = load('Images/Dino/Left', '.png')
         self.gun = False
 
     def draw(self, win):

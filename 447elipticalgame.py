@@ -28,15 +28,15 @@ class Game:
                 if event.type == pygame.QUIT:
                     return False
 
+    """ The main loop for our game """
+
     def game_loop(self):
         score = 0
         bg = pygame.image.load('Images/bg.jpg')
         clock = pygame.time.Clock()
         bulletSound = pygame.mixer.Sound('Sound/bullet.wav')
-        hitSound = pygame.mixer.Sound('Sound/hit.wav')
-        #mainloop
-        self.font = pygame.font.SysFont('arial', 30, True)
-        man = Player(300, 410)
+        font = pygame.font.SysFont('arial', 30, True)
+        dino = Player(300, 410)
         shootLoop = 0
         platforms = []
         platforms.append(Platform(110, 390, 120, 20, (0, 0, 0), 0,
@@ -60,27 +60,26 @@ class Game:
                     bullets.pop(bullets.index(bullet))
 
             for plat in platforms:
-                pass
-                #if man.hitbox[1] + man.hitbox[3] > plat.y + 5:
-                #   if man.hitbox[0] <= plat.x + plat.width and man.hitbox[0] + man.hitbox[2] >= plat.x:
+                #if dino.hitbox[1] + dino.hitbox[3] > plat.y + 5:
+                #   if dino.hitbox[0] <= plat.x + plat.width and dino.hitbox[0] + dino.hitbox[2] >= plat.x:
                 #      platmiddle = (plat.width//2)+plat.x
-                #     if man.hitbox[0] < platmiddle and not man.hitbox[1] + man.hitbox[3] <= plat.y:
-                #        man.x = plat.x - man.hitbox[2]
+                #     if dino.hitbox[0] < platmiddle and not dino.hitbox[1] + dino.hitbox[3] <= plat.y:
+                #        dino.x = plat.x - dino.hitbox[2]
                 #   else:
-                #      man.x = plat.x + plat.width
-                if man.hitbox[1] + man.hitbox[3] >= plat.y:
-                    if man.footbox[0] <= plat.x + plat.width:
-                        if man.footbox[0] + man.footbox[2] >= plat.x:
-                            jumpCount = 0
-                            man.y = plat.y - (man.hitbox[3] + 2)
+                #      dino.x = plat.x + plat.width
+                if dino.hitbox[1] + dino.hitbox[3] >= plat.y:
+                    if dino.footbox[0] <= plat.x + plat.width:
+                        if dino.footbox[0] + dino.footbox[2] >= plat.x:
+                            dino.jumpCount = 0
+                            dino.y = plat.y - (dino.hitbox[3] + 2)
 
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_ESCAPE]:
                 return
 
-            if keys[pygame.K_SPACE] and shootLoop == 0 and man.gun == True:
-                if man.left:
+            if keys[pygame.K_SPACE] and shootLoop == 0 and dino.gun == True:
+                if dino.left:
                     facing = -1
                 else:
                     facing = 1
@@ -88,28 +87,28 @@ class Game:
                 if len(bullets) < 5:
                     bullets.append(
                         Projectile(
-                            round(man.x + man.width // 2),
-                            round(man.y + man.height // 2), 6, (0, 0, 0),
+                            round(dino.x + dino.width // 2),
+                            round(dino.y + dino.height // 2), 6, (0, 0, 0),
                             facing))
                     bulletSound.play()
                 shootLoop = 1
             if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-                man.move_left()
+                dino.move_left()
 
             elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-                man.move_right(self.screen_width)
+                dino.move_right(self.screen_width)
             else:
-                man.stop()
+                dino.stop()
 
             if keys[pygame.K_UP] or keys[pygame.K_w]:
-                man.jump()
+                dino.jump()
 
-            man.update_location(self.screen_height)
+            dino.update_location(self.screen_height)
 
             self.win.blit(bg, (0, 0))
-            text = self.font.render('Score:' + str(score), 1, (0, 0, 0))
+            text = font.render('Score:' + str(score), 1, (0, 0, 0))
             self.win.blit(text, (0, 10))
-            man.draw(self.win)
+            dino.draw(self.win)
             for platform in platforms:
                 platform.draw(self.win)
             for bullet in bullets:

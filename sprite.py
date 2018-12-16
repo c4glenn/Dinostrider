@@ -3,5 +3,5 @@ class Sprite(object):
         self.x = startX
         self.y = startY
 
-    def draw(self):
+    def draw(self, win):
         pass
