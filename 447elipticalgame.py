@@ -1,6 +1,8 @@
 import pygame
 from player import Player
 from projectile import Projectile
+from gamePlatform import Platform
+
 pygame.init()
 swidth = 800
 sheight = 480
@@ -23,34 +25,9 @@ gun = True
 Run = True
 level = 1
 
-class platform(object):
-    def __init__(self, x, y, width, height, color, vel, end):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.color = color
-        self.vel = vel
-        self.end = end
-        self.path = (self.x, self.end) 
-    
-    def draw(self, win):
-        self.move()
-        pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height))
-    
-    def move(self):
-        if self.vel > 0:
-            if self.x  + self.vel < self.path[1]:
-                self.x += self.vel
-            else:
-                self.vel = self.vel * -1
-        else:
-            if self.x + self.vel > self.path[0]:
-                self.x += self.vel
-            else:
-                self.vel = self.vel * -1
+
 def Level1():
-    platforms.append(platform(110, 390, 120, 20, (0, 0, 0), 0, 390))
+    platforms.append(Platform(110, 390, 120, 20, (0, 0, 0), 0, 390))
 
 def redrawGameWindow():
     win.blit(bg, (0, 0))
