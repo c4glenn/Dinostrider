@@ -1,3 +1,4 @@
+""" This is the main game file for 447's FLL Project for Into Orbit """
 import pygame
 from player import Player
 from projectile import Projectile
@@ -5,6 +6,8 @@ from game_platform import Platform
 
 
 class Game:
+    """ This has the start screen and game loop """
+
     def __init__(self):
         pygame.init()
         self.screen_width = 800
@@ -28,9 +31,8 @@ class Game:
                 if event.type == pygame.QUIT:
                     return False
 
-    """ The main loop for our game """
-
     def game_loop(self):
+        """ This is the main game loop """
         score = 0
         bg = pygame.image.load('Images/bg.jpg')
         clock = pygame.time.Clock()
@@ -70,7 +72,8 @@ class Game:
                 if dino.hitbox[1] + dino.hitbox[3] >= plat.y:
                     if dino.footbox[0] <= plat.x + plat.width:
                         if dino.footbox[0] + dino.footbox[2] >= plat.x:
-                            dino.jumpCount = 0
+                            dino.isJump = False
+                            dino.jumpCount = 10
                             dino.y = plat.y - (dino.hitbox[3] + 2)
 
             keys = pygame.key.get_pressed()
@@ -78,7 +81,7 @@ class Game:
             if keys[pygame.K_ESCAPE]:
                 return
 
-            if keys[pygame.K_SPACE] and shootLoop == 0 and dino.gun == True:
+            if keys[pygame.K_SPACE] and shootLoop == 0 and dino.gun:
                 if dino.left:
                     facing = -1
                 else:

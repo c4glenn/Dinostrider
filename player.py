@@ -34,7 +34,7 @@ class Player(Sprite):
     def draw(self, win):
         if self.walkCount + 1 >= 27:
             self.walkCount = 0
-        if not (self.standing):
+        if not self.standing:
             if self.left:
                 win.blit(self.walkLeft[self.walkCount // 3], (self.x, self.y))
                 self.walkCount += 1
