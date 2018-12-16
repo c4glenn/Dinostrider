@@ -2,3 +2,4 @@ venv_447/*
 .DS_Store
 .vscode/*
 Images/Dino/SourceFiles/*
+__pycache__/*
