@@ -1,7 +1,6 @@
 import pygame
-import os
-from operator import itemgetter, attrgetter, methodcaller
 from player import Player
+from projectile import Projectile
 pygame.init()
 swidth = 800
 sheight = 480
@@ -12,7 +11,7 @@ pygame.display.set_caption("First Game")
 bg = pygame.image.load('Images/bg.jpg')
 clock = pygame.time.Clock()
 
-#bulletSound = pygame.mixer.Sound('bullet.wav')
+bulletSound = pygame.mixer.Sound('Sound/bullet.wav')
 #hitSound = pygame.mixer.Sound('hit.wav')
 
 #music = pygame.mixer.music.load('music.wav')
@@ -20,21 +19,9 @@ clock = pygame.time.Clock()
 
 score = 0
 started = False
-gun = False
+gun = True
 Run = True
 level = 1
-
-class projectile(object):
-    def __init__(self, x, y, radius,color,facing):
-            self.x = x
-            self.y = y
-            self.radius = radius
-            self.color = color
-            self.facing = facing
-            self.vel = 8 * facing
-
-    def draw(self, win):
-        pygame.draw,pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
 class platform(object):
     def __init__(self, x, y, width, height, color, vel, end):
@@ -129,7 +116,7 @@ while Run:
                 facing = 1
 
             if len(bullets) < 5:
-                bullets.append(projectile(round(man.x + man.width //2), round(man.y + man.height//2), 6, (0,0,0), facing))
+                bullets.append(Projectile(round(man.x + man.width //2), round(man.y + man.height//2), 6, (0,0,0), facing))
                 bulletSound.play()
             shootLoop = 1
         if keys[pygame.K_LEFT] and man.x > 0 or keys[pygame.K_a] and man.x > 0:
