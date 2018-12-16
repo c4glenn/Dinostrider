@@ -1,7 +1,7 @@
 import pygame
 from player import Player
 from projectile import Projectile
-from gamePlatform import Platform
+from game_platform import Platform
 
 
 class Game:
