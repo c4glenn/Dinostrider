@@ -31,6 +31,7 @@ class Player(Sprite):
         self.height = 64
         self.walkRight = load('Images/Dino/Right', 'image', '.png')
         self.walkLeft = load('Images/Dino/Left', 'image', '.png')
+        self.gun = False
 
     def draw(self, win):
         if self.walkCount + 1 >= 27:
