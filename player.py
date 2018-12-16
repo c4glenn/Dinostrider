@@ -1,6 +1,8 @@
 import os
 import pygame
 from sprite import Sprite
+
+
 def load(path, type, extension):
     total = []
     if type == 'image':
@@ -11,6 +13,7 @@ def load(path, type, extension):
         pass
     print(total)
     return total
+
 
 class Player(Sprite):
     def __init__(self, startX, startY):
@@ -28,16 +31,16 @@ class Player(Sprite):
         self.height = 64
         self.walkRight = load('Images/Dino/Right', 'image', '.png')
         self.walkLeft = load('Images/Dino/Left', 'image', '.png')
-    
+
     def draw(self, win):
         if self.walkCount + 1 >= 27:
             self.walkCount = 0
-        if not(self.standing):
+        if not (self.standing):
             if self.left:
-                win.blit(self.walkLeft[self.walkCount//3], (self.x, self.y))
+                win.blit(self.walkLeft[self.walkCount // 3], (self.x, self.y))
                 self.walkCount += 1
             elif self.right:
-                win.blit(self.walkRight[self.walkCount//3], (self.x, self.y))
+                win.blit(self.walkRight[self.walkCount // 3], (self.x, self.y))
                 self.walkCount += 1
         else:
             if self.right:
@@ -55,7 +58,7 @@ class Player(Sprite):
         self.walkCount = 0
         font1 = pygame.font.SysFont('Arial', 100)
         text = font1.render('-5', 1, (255, 0, 0))
-        win.blit(text, (250 - (text.get_width()/2), 200))
+        win.blit(text, (250 - (text.get_width() / 2), 200))
         pygame.display.update()
         i = 0
         while i < 300:
@@ -68,4 +71,44 @@ class Player(Sprite):
         self.jumpCount = 0
         self.isJump = False
 
+    def move_left(self):
+        self.x -= self.vel
+        if self.x < 0:
+            self.x = 0
+        self.left = True
+        self.right = False
+        self.standing = False
 
+    def move_right(self, screen_width):
+        self.x += self.vel
+        if (self.x + self.width) > screen_width:
+            self.x = screen_width - self.width
+        self.left = False
+        self.right = True
+        self.standing = False
+
+    def stop(self):
+        self.standing = True
+        self.walkCount = 0
+
+    def jump(self):
+        if not (self.isJump):
+            self.isJump = True
+            self.walkCount = 0
+
+    def update_location(self, screen_height):
+        if self.isJump:
+            if self.jumpCount >= -10:
+                neg = 1
+                if self.jumpCount < 0:
+                    neg = -1
+                change = (self.jumpCount**2) * 0.5 * neg
+                if self.y - change + self.height < screen_height:
+                    self.y -= change
+                    self.jumpCount -= 1
+                else:
+                    self.isJump = False
+                    self.jumpCount = 10
+            else:
+                self.isJump = False
+                self.jumpCount = 10
