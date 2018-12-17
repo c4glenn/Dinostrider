@@ -10,21 +10,26 @@ class Platform(Sprite):
         self.color = color
         self.vel = vel
         self.end = end
-        self.path = (self.x, self.end)
+        self.path = (self.pos.x, self.end)
 
     def draw(self, win):
         self.move()
+        self.image = pygame.Surface([self.width, self.height])
+        self.image.fill(self.color)
+        self.rect = self.image.get_rect()
+        self.rect.x = self.pos.x
+        self.rect.y = self.pos.y
         pygame.draw.rect(win, self.color,
-                         (self.x, self.y, self.width, self.height))
+                         (self.pos.x, self.pos.y, self.width, self.height))
 
     def move(self):
         if self.vel > 0:
-            if self.x + self.vel < self.path[1]:
-                self.x += self.vel
+            if self.pos.x + self.vel < self.path[1]:
+                self.pos.x += self.vel
             else:
                 self.vel = self.vel * -1
         else:
-            if self.x + self.vel > self.path[0]:
-                self.x += self.vel
+            if self.pos.x + self.vel > self.path[0]:
+                self.pos.x += self.vel
             else:
                 self.vel = self.vel * -1

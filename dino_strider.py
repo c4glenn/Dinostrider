@@ -1,8 +1,8 @@
 """ This is the main game file for 447's FLL Project for Into Orbit """
 import pygame
-from player import Player
-from projectile import Projectile
-from game_platform import Platform
+from player import *
+from projectile import *
+from game_platform import *
 
 
 class Game:
@@ -15,8 +15,8 @@ class Game:
         self.win = pygame.display.set_mode((self.screen_width,
                                             self.screen_height))
         pygame.display.set_caption("Dinostrider")
-        self.music = pygame.mixer.music.load('Sound/music.wav')
-        pygame.mixer.music.play(-1)
+        # self.music = pygame.mixer.music.load('Sound/music.wav')
+        # pygame.mixer.music.play(-1)
 
     def start_screen(self):
         font1 = pygame.font.SysFont('Arial', 50)
@@ -40,13 +40,15 @@ class Game:
         font = pygame.font.SysFont('arial', 30, True)
         dino = Player(300, 410)
         shootLoop = 0
-        platforms = []
-        platforms.append(Platform(110, 390, 120, 20, (0, 0, 0), 0,
-                                  390))  # level 1
+        platforms = pygame.sprite.Group()
+        self.all_sprites = pygame.sprite.Group()
+        self.all_sprites.add(dino)
+        p1 = platforms.add(
+            Platform(0, self.screen_height - 20, self.screen_width, 20,
+                     (0, 0, 0), 0, 0))  # level 1
         bullets = []
         while True:
             clock.tick(27)
-
             if shootLoop > 0:
                 shootLoop += 1
             if shootLoop > 3:
@@ -56,25 +58,10 @@ class Game:
                 if event.type == pygame.QUIT:
                     return
             for bullet in bullets:
-                if bullet.x < 500 and bullet.x > 0:
-                    bullet.x += bullet.vel
+                if bullet.pos.x < 500 and bullet.pos.x > 0:
+                    bullet.pos.x += bullet.vel
                 else:
                     bullets.pop(bullets.index(bullet))
-
-            for plat in platforms:
-                #if dino.hitbox[1] + dino.hitbox[3] > plat.y + 5:
-                #   if dino.hitbox[0] <= plat.x + plat.width and dino.hitbox[0] + dino.hitbox[2] >= plat.x:
-                #      platmiddle = (plat.width//2)+plat.x
-                #     if dino.hitbox[0] < platmiddle and not dino.hitbox[1] + dino.hitbox[3] <= plat.y:
-                #        dino.x = plat.x - dino.hitbox[2]
-                #   else:
-                #      dino.x = plat.x + plat.width
-                if dino.hitbox[1] + dino.hitbox[3] >= plat.y:
-                    if dino.footbox[0] <= plat.x + plat.width:
-                        if dino.footbox[0] + dino.footbox[2] >= plat.x:
-                            dino.isJump = False
-                            dino.jumpCount = 10
-                            dino.y = plat.y - (dino.hitbox[3] + 2)
 
             keys = pygame.key.get_pressed()
 
@@ -90,23 +77,13 @@ class Game:
                 if len(bullets) < 5:
                     bullets.append(
                         Projectile(
-                            round(dino.x + dino.width // 2),
-                            round(dino.y + dino.height // 2), 6, (0, 0, 0),
+                            round(dino.pos.x + dino.width // 2),
+                            round(dino.pos.y + dino.height // 2), 6, (0, 0, 0),
                             facing))
                     bulletSound.play()
                 shootLoop = 1
-            if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-                dino.move_left()
 
-            elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-                dino.move_right(self.screen_width)
-            else:
-                dino.stop()
-
-            if keys[pygame.K_UP] or keys[pygame.K_w]:
-                dino.jump()
-
-            dino.update_location(self.screen_height)
+            dino.update_location(self.screen_height, self.screen_width)
 
             self.win.blit(bg, (0, 0))
             text = font.render('Score:' + str(score), 1, (0, 0, 0))
@@ -114,6 +91,11 @@ class Game:
             dino.draw(self.win)
             for platform in platforms:
                 platform.draw(self.win)
+            hits = pygame.sprite.spritecollide(dino, platforms, False)
+            if hits:
+                dino.vel.y = 0
+                dino.pos.y = hits[0].rect.top - 64 + 1
+
             for bullet in bullets:
                 bullet.draw(self.win)
             pygame.display.update()
