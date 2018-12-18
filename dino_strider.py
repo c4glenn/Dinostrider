@@ -1,8 +1,11 @@
 """ This is the main game file for 447's FLL Project for Into Orbit """
 import pygame
-from player import *
-from projectile import *
-from game_platform import *
+from player import Player
+from projectile import Projectile
+from game_platform import Platform
+from sprite import Sprite
+from sprite import load
+from sprite import vec
 
 
 class Game:
@@ -46,6 +49,9 @@ class Game:
         p1 = platforms.add(
             Platform(0, self.screen_height - 20, self.screen_width, 20,
                      (0, 0, 0), 0, 0))  # level 1
+        p2 = platforms.add(
+            Platform(self.screen_width // 2 - 20, self.screen_height // 2 + 20,
+                     40, 20, (0, 0, 0), 0, 0))  # level 1
         bullets = []
         while True:
             clock.tick(27)
@@ -64,6 +70,11 @@ class Game:
                     bullets.pop(bullets.index(bullet))
 
             keys = pygame.key.get_pressed()
+
+            if keys[pygame.K_LEFT]:
+                dino.move_left()
+            elif keys[pygame.K_RIGHT]:
+                dino.move_right()
 
             if keys[pygame.K_ESCAPE]:
                 return
@@ -91,10 +102,12 @@ class Game:
             dino.draw(self.win)
             for platform in platforms:
                 platform.draw(self.win)
+
             hits = pygame.sprite.spritecollide(dino, platforms, False)
+
             if hits:
                 dino.vel.y = 0
-                dino.pos.y = hits[0].rect.top - 64 + 1
+                dino.pos.y = hits[0].rect.top - 50
 
             for bullet in bullets:
                 bullet.draw(self.win)

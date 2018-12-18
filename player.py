@@ -1,15 +1,7 @@
-import os
 import pygame
-from sprite import *
-
-
-def load(path, extension):
-    total = []
-    if extension == '.png':
-        for x in range(1, 10):
-            img_path = os.path.join(path, str(x) + extension)
-            total.append(pygame.image.load(img_path))
-    return total
+from sprite import Sprite
+from sprite import load
+from sprite import vec
 
 
 class Player(Sprite):
@@ -17,7 +9,8 @@ class Player(Sprite):
         super().__init__(startX, startY)
         self.Player_acc = 0.5
         self.vel = vec(0, 0)
-        self.acc = vec(0, 0)
+        self.grav = 0.5
+        self.acc = vec(0, self.grav)
         self.isJump = False
         self.jumpCount = 10
         self.left = False
@@ -28,11 +21,10 @@ class Player(Sprite):
         self.footbox = (self.pos.x + 19, self.pos.y + 50, 16, 4)
         self.width = 64
         self.height = 64
-        self.walkRight = load('Images/Dino/Right', '.png')
-        self.walkLeft = load('Images/Dino/Left', '.png')
+        self.walkRight = load('Images/Dino/Right/*.png')
+        self.walkLeft = load('Images/Dino/Left/*.png')
         self.gun = False
         self.touching_platform = False
-        self.grav = 5
         self.friction = -0.12
 
     def draw(self, win):
@@ -65,25 +57,21 @@ class Player(Sprite):
         self.walkCount = 0
 
     def move_left(self):
+        self.acc = vec(0, self.grav)
         self.acc.x = -self.Player_acc
-
-        #     self.x -= self.player_acc
-        #     if self.x < 0:
-        #         self.x = 0
         self.left = True
         self.right = False
         self.standing = False
 
     def move_right(self):
+        self.acc = vec(0, self.grav)
         self.acc.x = self.Player_acc
-        # self.x += self.player_acc
-        # if (self.x + self.width) > screen_width:
-        #     self.x = screen_width - self.width
         self.left = False
         self.right = True
         self.standing = False
 
     def stop(self):
+        self.acc = vec(0, self.grav)
         self.standing = True
         self.walkCount = 0
 
@@ -93,18 +81,15 @@ class Player(Sprite):
             self.walkCount = 0
 
     def update_location(self, screen_height, screen_width):
-        self.acc = vec(0, 0.5)
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            self.move_left()
-        if keys[pygame.K_RIGHT]:
-            self.move_right()
+        self.acc.y = self.grav
 
         self.acc.x += self.vel.x * self.friction
-        self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
 
+        self.vel += self.acc
+
+        self.pos += self.vel + 0.5 * self.acc
         if self.pos.x + self.width > screen_width:
             self.pos.x = 0
         if self.pos.x < 0:
             self.pos.x = screen_width - self.width
+        self.acc = vec(0, self.grav)
