@@ -54,14 +54,14 @@ class Player(Sprite):
 
     def move_left(self):
         self.acc = vec(0, self.grav)
-        self.acc.x = -self.Player_acc
+        self.acc.x = -self.player_acc
         self.left = True
         self.right = False
         self.standing = False
 
     def move_right(self):
         self.acc = vec(0, self.grav)
-        self.acc.x = self.Player_acc
+        self.acc.x = self.player_acc
         self.left = False
         self.right = True
         self.standing = False
@@ -92,12 +92,12 @@ class Player(Sprite):
         self.acc.x += self.vel.x * self.friction
 
         self.vel += self.acc
-        print(self.vel)
         self.pos += self.vel + 0.5 * self.acc
-        if self.pos.x + self.width > screen_width:
+
+        if self.pos.x + self.rect.width > screen_width:
             self.pos.x = 0
         if self.pos.x < 0:
-            self.pos.x = screen_width - self.width
+            self.pos.x = screen_width - self.rect.width
         self.acc = vec(0, self.grav)
 
     def get_hearts(self, win):
