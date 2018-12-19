@@ -19,9 +19,9 @@ class Game:
         # pygame.mixer.music.play(-1)
 
     def start_screen(self):
-        font1 = pygame.font.SysFont('Arial', 50)
-        text1 = font1.render('Press Space to start', 1, (255, 0, 0))
-        self.win.blit(text1, (250 - (text1.get_width() / 2), 200))
+        start_text = pygame.font.SysFont('Arial', 50).render(
+            'Press Space to start', 1, (255, 0, 0))
+        self.win.blit(start_text, (250 - (start_text.get_width() / 2), 200))
         pygame.display.update()
         while True:
             keys = pygame.key.get_pressed()
@@ -37,7 +37,7 @@ class Game:
         background = pygame.image.load('Images/bg.jpg')
         clock = pygame.time.Clock()
         bullet_sound = pygame.mixer.Sound('Sound/bullet.wav')
-        font = pygame.font.SysFont('arial', 30, True)
+        score_font = pygame.font.SysFont('arial', 30, True)
         dino = Player(300, 410)
         shoot_loop = 0
         platforms = pygame.sprite.Group()
@@ -102,7 +102,7 @@ class Game:
             dino.update_location(self.screen_height, self.screen_width)
 
             self.win.blit(background, (0, 0))
-            text = font.render('Score:' + str(score), 1, (0, 0, 0))
+            text = score_font.render('Score:' + str(score), 1, (0, 0, 0))
             self.win.blit(text, (0, 10))
             dino.draw(self.win)
             for platform in platforms:
