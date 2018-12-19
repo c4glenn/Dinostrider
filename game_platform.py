@@ -5,16 +5,13 @@ from sprite import Sprite
 class Platform(Sprite):
     def __init__(self, x, y, width, height, color, vel, end):
         super().__init__(x, y, height, width)
-        self.width = width
-        self.height = height
         self.color = color
         self.vel = vel
         self.end = end
         self.path = (self.pos.x, self.end)
 
     def draw(self, win):
-        pygame.draw.rect(win, self.color,
-                         (self.pos.x, self.pos.y, self.width, self.height))
+        pygame.draw.rect(win, self.color, self.rect)
 
     def move(self):
         if self.vel > 0:
