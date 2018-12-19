@@ -4,7 +4,7 @@ from sprite import Sprite
 
 class Projectile(Sprite):
     def __init__(self, x, y, radius, color, facing):
-        super().__init__(x, y)
+        super().__init__(x, y, radius * 2, radius * 2)
         self.radius = radius
         self.color = color
         self.facing = facing

@@ -3,8 +3,6 @@ import pygame
 from player import Player
 from projectile import Projectile
 from game_platform import Platform
-from sprite import Sprite
-from sprite import vec
 
 
 class Game:
@@ -36,33 +34,33 @@ class Game:
     def game_loop(self):
         """ This is the main game loop """
         score = 0
-        bg = pygame.image.load('Images/bg.jpg')
+        background = pygame.image.load('Images/bg.jpg')
         clock = pygame.time.Clock()
-        bulletSound = pygame.mixer.Sound('Sound/bullet.wav')
+        bullet_sound = pygame.mixer.Sound('Sound/bullet.wav')
         font = pygame.font.SysFont('arial', 30, True)
-        dino = Player(300, 410, self)
-        shootLoop = 0
+        dino = Player(300, 410)
+        shoot_loop = 0
         platforms = pygame.sprite.Group()
-        self.all_sprites = pygame.sprite.Group()
-        self.all_sprites.add(dino)
-        p1 = platforms.add(
+        all_sprites = pygame.sprite.Group()
+        all_sprites.add(dino)
+        platforms.add(
             Platform(0, self.screen_height - 20, (self.screen_width // 2) - 40,
                      20, (0, 0, 0), 0, 0))  # level 1
-        p2 = platforms.add(
+        platforms.add(
             Platform((self.screen_width // 2) + 40, self.screen_height - 20,
                      (self.screen_width // 2) - 40, 20, (0, 0, 0), 0,
                      0))  # level 1
-        p3 = platforms.add(
+        platforms.add(
             Platform(self.screen_width // 2 - 20,
                      self.screen_height // 2 + 100, 70, 30, (0, 0, 0), 0,
                      0))  # level 1
         bullets = []
         while True:
             clock.tick(27)
-            if shootLoop > 0:
-                shootLoop += 1
-            if shootLoop > 3:
-                shootLoop = 0
+            if shoot_loop > 0:
+                shoot_loop += 1
+            if shoot_loop > 3:
+                shoot_loop = 0
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -86,7 +84,7 @@ class Game:
             if keys[pygame.K_ESCAPE]:
                 return
 
-            if keys[pygame.K_SPACE] and shootLoop == 0 and dino.gun:
+            if keys[pygame.K_SPACE] and shoot_loop == 0 and dino.gun:
                 if dino.left:
                     facing = -1
                 else:
@@ -98,22 +96,22 @@ class Game:
                             round(dino.pos.x + dino.width // 2),
                             round(dino.pos.y + dino.height // 2), 6, (0, 0, 0),
                             facing))
-                    bulletSound.play()
-                shootLoop = 1
+                    bullet_sound.play()
+                shoot_loop = 1
 
             dino.update_location(self.screen_height, self.screen_width)
 
-            self.win.blit(bg, (0, 0))
+            self.win.blit(background, (0, 0))
             text = font.render('Score:' + str(score), 1, (0, 0, 0))
             self.win.blit(text, (0, 10))
             dino.draw(self.win)
             for platform in platforms:
                 platform.draw(self.win)
 
-            self.hits = pygame.sprite.spritecollide(dino, platforms, False)
+            hits = pygame.sprite.spritecollide(dino, platforms, False)
 
-            if self.hits:
-                dino.touchDown()
+            if hits:
+                dino.touch_down(hits[0].rect)
 
             for bullet in bullets:
                 bullet.draw(self.win)

@@ -5,9 +5,11 @@ vec = pygame.math.Vector2
 
 
 class Sprite(pygame.sprite.Sprite):
-    def __init__(self, startX, startY):
-        pygame.sprite.Sprite.__init__(self)
-        self.pos = vec(startX, startY)
+    def __init__(self, start_x, start_y, height, width):
+        #pygame.sprite.Sprite.__init__(self)
+        super().__init__()
+        self.pos = vec(start_x, start_y)
+        self.rect = pygame.Rect(self.pos.x, self.pos.y, width, height)
 
     def draw(self, win):
         pass
