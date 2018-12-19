@@ -4,7 +4,6 @@ from player import Player
 from projectile import Projectile
 from game_platform import Platform
 from sprite import Sprite
-from sprite import load
 from sprite import vec
 
 
@@ -41,17 +40,22 @@ class Game:
         clock = pygame.time.Clock()
         bulletSound = pygame.mixer.Sound('Sound/bullet.wav')
         font = pygame.font.SysFont('arial', 30, True)
-        dino = Player(300, 410)
+        dino = Player(300, 410, self)
         shootLoop = 0
         platforms = pygame.sprite.Group()
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(dino)
         p1 = platforms.add(
-            Platform(0, self.screen_height - 20, self.screen_width, 20,
-                     (0, 0, 0), 0, 0))  # level 1
+            Platform(0, self.screen_height - 20, (self.screen_width // 2) - 40,
+                     20, (0, 0, 0), 0, 0))  # level 1
         p2 = platforms.add(
-            Platform(self.screen_width // 2 - 20, self.screen_height // 2 + 20,
-                     40, 20, (0, 0, 0), 0, 0))  # level 1
+            Platform((self.screen_width // 2) + 40, self.screen_height - 20,
+                     (self.screen_width // 2) - 40, 20, (0, 0, 0), 0,
+                     0))  # level 1
+        p3 = platforms.add(
+            Platform(self.screen_width // 2 - 20,
+                     self.screen_height // 2 + 100, 70, 30, (0, 0, 0), 0,
+                     0))  # level 1
         bullets = []
         while True:
             clock.tick(27)
@@ -63,6 +67,9 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP:
+                        dino.jump()
             for bullet in bullets:
                 if bullet.pos.x < 500 and bullet.pos.x > 0:
                     bullet.pos.x += bullet.vel
@@ -103,11 +110,10 @@ class Game:
             for platform in platforms:
                 platform.draw(self.win)
 
-            hits = pygame.sprite.spritecollide(dino, platforms, False)
+            self.hits = pygame.sprite.spritecollide(dino, platforms, False)
 
-            if hits:
-                dino.vel.y = 0
-                dino.pos.y = hits[0].rect.top - 50
+            if self.hits:
+                dino.touchDown()
 
             for bullet in bullets:
                 bullet.draw(self.win)

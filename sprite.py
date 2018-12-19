@@ -1,15 +1,7 @@
-import pygame
-import os
 import glob
+import pygame
+
 vec = pygame.math.Vector2
-
-
-def load(path):
-    total = []
-    files = glob.glob(path)
-    for file in files:
-        total.append(pygame.image.load(file))
-    return total
 
 
 class Sprite(pygame.sprite.Sprite):
@@ -19,3 +11,10 @@ class Sprite(pygame.sprite.Sprite):
 
     def draw(self, win):
         pass
+
+    def load(self, path):
+        total = []
+        files = glob.glob(path)
+        for file in files:
+            total.append(pygame.image.load(file))
+        return total
