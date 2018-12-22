@@ -3,12 +3,13 @@ from sprite import Sprite
 
 
 class Platform(Sprite):
-    def __init__(self, x, y, width, height, color, vel, end):
+    def __init__(self, x, y, width, height, color, vel, end, friction):
         super().__init__(x, y, height, width)
         self.color = color
         self.vel = vel
         self.end = end
         self.path = (self.pos.x, self.end)
+        self.friction = friction
 
     def draw(self, win):
         pygame.draw.rect(win, self.color, self.rect)

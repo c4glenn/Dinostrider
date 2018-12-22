@@ -11,15 +11,15 @@ class level1(level):
         self.platforms.empty()
         self.platforms.add(
             Platform(0, self.screen_height - 20, (self.screen_width // 2) - 40,
-                     20, (0, 0, 0), 0, 0))  # level 1
+                     20, (0, 0, 0), 0, 0, -0.12))  # level 1
         self.platforms.add(
             Platform((self.screen_width // 2) + 40, self.screen_height - 20,
-                     (self.screen_width // 2) - 40, 20, (0, 0, 0), 0,
-                     0))  # level 1
+                     (self.screen_width // 2) - 40, 20, (0, 0, 0), 0, 0,
+                     -0.12))  # level 1
         self.platforms.add(
             Platform(self.screen_width // 2 - 20,
-                     self.screen_height // 2 + 100, 70, 30, (0, 0, 0), 0,
-                     0))  # level 1
+                     self.screen_height // 2 + 100, 70, 30, (0, 0, 0), 0, 0,
+                     -0.12))  # level 1
 
     def draw(self, win):
         for platform in self.platforms:

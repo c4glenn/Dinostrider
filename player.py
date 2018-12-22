@@ -67,15 +67,17 @@ class Player(Sprite):
             self.jump_count += 1
             self.pos.y += 5
 
-    def touch_down(self, platform_rect):
-        if not (self.rect.centerx > platform_rect.right
-                or self.rect.centerx < platform_rect.left):
+    def touch_down(self, platform_rect, friction):
+        print(self.rect.top, platform_rect.top, platform_rect.bottom)
+        if self.rect.top >= platform_rect.top and self.rect.top <= platform_rect.bottom:
             self.vel.y = 0
-            if self.rect.y <= platform_rect.top:
+            self.rect.top = platform_rect.bottom
+        if self.rect.bottom >= platform_rect.top and self.rect.bottom <= platform_rect.bottom:
+            if self.pos.x >= platform_rect.left and self.pos.x <= platform_rect.right:
+                self.vel.y = 0
                 self.pos.y = platform_rect.top
                 self.jump_count = 0
-            if self.rect.y >= platform_rect.bottom:
-                self.pos.y = platform_rect.bottom
+                self.friction = friction
 
     def update_location(self, screen_height, screen_width):
         self.acc.y = self.grav

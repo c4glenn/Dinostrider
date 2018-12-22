@@ -110,7 +110,7 @@ class Game:
             hits = pygame.sprite.spritecollide(dino, level.platforms, False)
 
             if hits:
-                dino.touch_down(hits[0].rect)
+                dino.touch_down(hits[0].rect, hits[0].friction)
 
             for bullet in bullets:
                 bullet.draw(self.win)
