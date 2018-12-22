@@ -5,6 +5,7 @@ from projectile import Projectile
 from game_platform import Platform
 from Level import level
 from Level1 import level1
+from Slime import slime
 
 
 class Game:
@@ -62,9 +63,19 @@ class Game:
                         dino.jump()
 
             for bullet in bullets:
-                if bullet.pos.x < self.screen_width and bullet.pos.x > 0:
+                remove = False
+                print(bullet.rect)
+                hits = pygame.sprite.spritecollide(bullet, level.platforms,
+                                                   False)
+                if hits:
+                    print(hits)
+                    remove = True
+                if (bullet.pos.x < self.screen_width) and (bullet.pos.x > 0):
                     bullet.pos.x += bullet.vel
                 else:
+                    remove = True
+
+                if remove:
                     bullets.pop(bullets.index(bullet))
 
             keys = pygame.key.get_pressed()
@@ -112,11 +123,12 @@ class Game:
             self.win.blit(text, (0, 10))
             level.draw(self.win)
             dino.draw(self.win)
+            for enemy in level.enemys:
+                enemy.draw(self.win)
 
             hits = pygame.sprite.spritecollide(dino, level.platforms, False)
-
-            if hits:
-                dino.touch_down(hits[0].rect, hits[0].friction)
+            for i in range(0, len(hits)):
+                dino.touch_down(hits[i].rect, hits[i].friction)
 
             for bullet in bullets:
                 bullet.draw(self.win)
