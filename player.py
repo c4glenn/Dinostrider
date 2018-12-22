@@ -1,22 +1,18 @@
 import pygame
-from sprite import Sprite
+from sprite import FacingSprite
 from sprite import vec
 
 
-class Player(Sprite):
+class Player(FacingSprite):
     def __init__(self, startX, startY):
-        super().__init__(startX, startY, 52, 52)
+        super().__init__(startX, startY, 52, 52, 'Images/Dino')
         self.player_acc = 0.5
         self.vel = vec(0, 0)
         self.grav = 0.8
         self.acc = vec(0, self.grav)
         self.jump_count = 0
-        self.facing_left = False
-        self.walk_count = 0
         self.standing = True
         self.footbox = (self.pos.x + 19, self.pos.y + 50, 16, 4)
-        self.images_right = self.load('Images/Dino/Right/*.png')
-        self.images_left = self.load('Images/Dino/Left/*.png')
         self.image_heart = pygame.image.load('Images/Dino/Heart.png')
         self.image_life = pygame.image.load('Images/Dino/Lives.png')
         self.gun = True
@@ -28,15 +24,7 @@ class Player(Sprite):
         self.startY = startY
 
     def draw(self, win):
-        if self.walk_count + 1 >= 27:
-            self.walk_count = 0
-        if self.facing_left:
-            win.blit(self.images_left[self.walk_count // 3], self.rect.topleft)
-            self.walk_count += 1
-        else:
-            win.blit(self.images_right[self.walk_count // 3],
-                     self.rect.topleft)
-            self.walk_count += 1
+        super().draw(win)
 
         self.footbox = (self.pos.x + 19, self.pos.y + 50, 16, 4)
 
