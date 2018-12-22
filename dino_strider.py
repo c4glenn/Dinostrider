@@ -40,7 +40,7 @@ class Game:
         clock = pygame.time.Clock()
         bullet_sound = pygame.mixer.Sound('Sound/bullet.wav')
         score_font = pygame.font.SysFont('arial', 30, True)
-        dino = Player(300, 410)
+        dino = Player(10, 410)
         shoot_loop = 0
         all_sprites = pygame.sprite.Group()
         all_sprites.add(dino)

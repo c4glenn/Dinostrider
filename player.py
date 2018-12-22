@@ -43,7 +43,7 @@ class Player(Sprite):
         self.get_hearts(win)
         self.get_lives(win)
         #pygame.draw.rect(win, (255,0,0), self.footbox, 2)
-        pygame.draw.rect(win, (255, 0, 0), self.rect, 2)
+        # pygame.draw.rect(win, (255, 0, 0), self.rect, 2)
 
     def hit(self):
         self.walk_count = 0
@@ -112,7 +112,6 @@ class Player(Sprite):
 
     def lose_heart(self):
         self.hearts -= 1
-
 
     def get_lives(self, win):
         for i in range(0, self.lives):
