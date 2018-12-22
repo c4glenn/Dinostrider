@@ -3,6 +3,8 @@ import pygame
 from player import Player
 from projectile import Projectile
 from game_platform import Platform
+from Level import level
+from Level1 import level1
 
 
 class Game:
@@ -15,8 +17,9 @@ class Game:
         self.win = pygame.display.set_mode((self.screen_width,
                                             self.screen_height))
         pygame.display.set_caption("Dinostrider")
+
         # self.music = pygame.mixer.music.load('Sound/music.wav')
-        # pygame.mixer.music.play(-1)
+        # pygame.mixer.music.play(-1
 
     def start_screen(self):
         start_text = pygame.font.SysFont('Arial', 50).render(
@@ -40,21 +43,11 @@ class Game:
         score_font = pygame.font.SysFont('arial', 30, True)
         dino = Player(300, 410)
         shoot_loop = 0
-        platforms = pygame.sprite.Group()
         all_sprites = pygame.sprite.Group()
         all_sprites.add(dino)
-        platforms.add(
-            Platform(0, self.screen_height - 20, (self.screen_width // 2) - 40,
-                     20, (0, 0, 0), 0, 0))  # level 1
-        platforms.add(
-            Platform((self.screen_width // 2) + 40, self.screen_height - 20,
-                     (self.screen_width // 2) - 40, 20, (0, 0, 0), 0,
-                     0))  # level 1
-        platforms.add(
-            Platform(self.screen_width // 2 - 20,
-                     self.screen_height // 2 + 100, 70, 30, (0, 0, 0), 0,
-                     0))  # level 1
         bullets = []
+        level = level1(self.screen_height, self.screen_width)
+
         while True:
             clock.tick(27)
             if shoot_loop > 0:
@@ -68,6 +61,7 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
                         dino.jump()
+                        score += 1
             for bullet in bullets:
                 if bullet.pos.x < 500 and bullet.pos.x > 0:
                     bullet.pos.x += bullet.vel
@@ -80,9 +74,17 @@ class Game:
                 dino.move_left()
             elif keys[pygame.K_RIGHT]:
                 dino.move_right()
+            else:
+                dino.stop()
 
             if keys[pygame.K_ESCAPE]:
                 return
+
+            if keys[pygame.K_COMMA]:
+                dino.gain_heart()
+
+            if keys[pygame.K_PERIOD]:
+                dino.lose_heart()
 
             if keys[pygame.K_SPACE] and shoot_loop == 0 and dino.gun:
                 if dino.left:
@@ -104,11 +106,10 @@ class Game:
             self.win.blit(background, (0, 0))
             text = score_font.render('Score:' + str(score), 1, (0, 0, 0))
             self.win.blit(text, (0, 10))
+            level.draw(self.win)
             dino.draw(self.win)
-            for platform in platforms:
-                platform.draw(self.win)
 
-            hits = pygame.sprite.spritecollide(dino, platforms, False)
+            hits = pygame.sprite.spritecollide(dino, level.platforms, False)
 
             if hits:
                 dino.touch_down(hits[0].rect)
