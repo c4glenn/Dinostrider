@@ -31,7 +31,7 @@ class Player(FacingSprite):
         self.get_hearts(win)
         self.get_lives(win)
         #pygame.draw.rect(win, (255,0,0), self.footbox, 2)
-        pygame.draw.rect(win, (255, 0, 0), self.rect, 2)
+        # pygame.draw.rect(win, (255, 0, 0), self.rect, 2)
 
     def hit(self, enemy_rect):
         self.walk_count = 0
@@ -57,7 +57,7 @@ class Player(FacingSprite):
     def jump(self):
         if self.jump_count < 2:
             self.walk_count = 0
-            self.vel.y = -15
+            self.vel.y = -13
             self.jump_count += 1
             self.pos.y += 5
 

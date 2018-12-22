@@ -19,8 +19,8 @@ class Game:
                                             self.screen_height))
         pygame.display.set_caption("Dinostrider")
 
-        # self.music = pygame.mixer.music.load('Sound/music.wav')
-        # pygame.mixer.music.play(-1
+        music = pygame.mixer.music.load('Sound/music.wav')
+        pygame.mixer.music.play(-1)
 
     def start_screen(self):
         start_text = pygame.font.SysFont('Arial', 50).render(

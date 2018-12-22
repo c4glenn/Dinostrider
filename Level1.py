@@ -14,26 +14,28 @@ class level1(level):
         self.platforms.add(
             Platform(0, self.screen_height - 40,
                      (self.screen_width // 2) - 200, 40, (0, 0, 0), 0, 0,
-                     -0.099))  # level 1
+                     -0.099))  # ground 1
         self.platforms.add(
             Platform(0, self.screen_height - 300,
                      (self.screen_width // 2) - 200, 40, (0, 0, 0), 0, 0,
-                     -0.099))  # level 1
+                     -0.099))  # special area
         self.platforms.add(
             Platform((self.screen_width // 2) + 200, self.screen_height - 40,
                      (self.screen_width // 2) - 40, 40, (0, 0, 0), 0, 0,
-                     -0.099))  # level 1
+                     -0.099))  # ground 2
         self.platforms.add(
             Platform(self.screen_width // 2 - 150,
                      self.screen_height // 2 + 150, 100, 30, (0, 0, 0), 0, 0,
-                     -0.12))  # level 1
+                     -0.12))  # plat 1
         self.platforms.add(
-            Platform(self.screen_width // 2 - 50,
+            Platform(self.screen_width // 2 - 60,
                      self.screen_height // 2 + 100, 100, 30, (0, 0, 0), 0, 0,
-                     -0.12))  # level 1
+                     -0.12))  # plat 2
         self.platforms.add(
             Platform(self.screen_width // 2 + 50, self.screen_height // 2 + 50,
-                     100, 30, (0, 0, 0), 0, 0, -0.12))  # level 1
+                     100, 30, (0, 0, 0), 0, 0, -0.12))  # plat 3
+        
+        
         self.enemys.add(slime(700, 390, 0, 0))
 
     def draw(self, win):
