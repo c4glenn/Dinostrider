@@ -37,7 +37,6 @@ class Game:
     def game_loop(self):
         """ This is the main game loop """
         score = 0
-        background = pygame.image.load('Images/bg.jpg')
         clock = pygame.time.Clock()
         bullet_sound = pygame.mixer.Sound('Sound/bullet.wav')
         score_font = pygame.font.SysFont('arial', 30, True)
@@ -52,7 +51,7 @@ class Game:
             clock.tick(27)
             if shoot_loop > 0:
                 shoot_loop += 1
-            if shoot_loop > 3:
+            if shoot_loop > 4:
                 shoot_loop = 0
 
             for event in pygame.event.get():
@@ -61,9 +60,9 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
                         dino.jump()
-                        score += 1
+
             for bullet in bullets:
-                if bullet.pos.x < 500 and bullet.pos.x > 0:
+                if bullet.pos.x < self.screen_width and bullet.pos.x > 0:
                     bullet.pos.x += bullet.vel
                 else:
                     bullets.pop(bullets.index(bullet))
@@ -87,7 +86,7 @@ class Game:
                 dino.lose_heart()
 
             if keys[pygame.K_SPACE] and shoot_loop == 0 and dino.gun:
-                if dino.left:
+                if dino.facing_left:
                     facing = -1
                 else:
                     facing = 1
@@ -95,15 +94,14 @@ class Game:
                 if len(bullets) < 5:
                     bullets.append(
                         Projectile(
-                            round(dino.pos.x + dino.width // 2),
-                            round(dino.pos.y + dino.height // 2), 6, (0, 0, 0),
-                            facing))
+                            int(dino.rect.centerx), int(dino.rect.centery), 6,
+                            (0, 0, 0), facing))
                     bullet_sound.play()
                 shoot_loop = 1
 
             dino.update_location(self.screen_height, self.screen_width)
 
-            self.win.blit(background, (0, 0))
+            self.win.blit(level.background, (0, 0))
             text = score_font.render('Score:' + str(score), 1, (0, 0, 0))
             self.win.blit(text, (0, 10))
             level.draw(self.win)

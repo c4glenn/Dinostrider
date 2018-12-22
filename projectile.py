@@ -11,4 +11,5 @@ class Projectile(Sprite):
         self.vel = 8 * facing
 
     def draw(self, win):
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+        pygame.draw.circle(win, self.color, (int(self.pos.x), int(self.pos.y)),
+                           self.radius)

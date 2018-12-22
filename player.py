@@ -18,7 +18,7 @@ class Player(Sprite):
         self.images_right = self.load('Images/Dino/Right/*.png')
         self.images_left = self.load('Images/Dino/Left/*.png')
         self.image_heart = pygame.image.load('Images/Dino/Heart.png')
-        self.gun = False
+        self.gun = True
         self.touching_platform = False
         self.friction = -0.12
         self.hearts = 3
