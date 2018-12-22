@@ -7,6 +7,7 @@ from game_platform import Platform
 class level1(level):
     def __init__(self, screen_height, screen_width):
         super().__init__(screen_height, screen_width)
+        self.background = pygame.image.load('Images/bg.jpg')
         self.platforms.empty()
         self.platforms.add(
             Platform(0, self.screen_height - 20, (self.screen_width // 2) - 40,
