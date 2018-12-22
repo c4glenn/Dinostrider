@@ -85,6 +85,12 @@ class Game:
             if keys[pygame.K_PERIOD]:
                 dino.lose_heart()
 
+            if keys[pygame.K_RIGHTBRACKET]:
+                dino.gain_life()
+
+            if keys[pygame.K_LEFTBRACKET]:
+                dino.lose_life()
+
             if keys[pygame.K_SPACE] and shoot_loop == 0 and dino.gun:
                 if dino.facing_left:
                     facing = -1

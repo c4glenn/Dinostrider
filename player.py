@@ -18,10 +18,14 @@ class Player(Sprite):
         self.images_right = self.load('Images/Dino/Right/*.png')
         self.images_left = self.load('Images/Dino/Left/*.png')
         self.image_heart = pygame.image.load('Images/Dino/Heart.png')
+        self.image_life = pygame.image.load('Images/Dino/Lives.png')
         self.gun = True
         self.touching_platform = False
         self.friction = -0.12
         self.hearts = 3
+        self.lives = 3
+        self.startX = startX
+        self.startY = startY
 
     def draw(self, win):
         if self.walk_count + 1 >= 27:
@@ -37,6 +41,7 @@ class Player(Sprite):
         self.footbox = (self.pos.x + 19, self.pos.y + 50, 16, 4)
 
         self.get_hearts(win)
+        self.get_lives(win)
         #pygame.draw.rect(win, (255,0,0), self.footbox, 2)
         pygame.draw.rect(win, (255, 0, 0), self.rect, 2)
 
@@ -68,7 +73,6 @@ class Player(Sprite):
             self.pos.y += 5
 
     def touch_down(self, platform_rect, friction):
-        print(self.rect.top, platform_rect.top, platform_rect.bottom)
         if self.rect.top >= platform_rect.top and self.rect.top <= platform_rect.bottom:
             self.vel.y = 0
             self.rect.top = platform_rect.bottom
@@ -86,20 +90,38 @@ class Player(Sprite):
 
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
+        self.acc = vec(0, self.grav)
 
         if self.pos.x + self.rect.width > screen_width:
             self.pos.x = 0
         if self.pos.x < 0:
             self.pos.x = screen_width - self.rect.width
-        self.acc = vec(0, self.grav)
+
+        if self.pos.y > screen_height:
+            self.lose_life()
         self.update_rectangle()
 
     def get_hearts(self, win):
         for i in range(0, self.hearts):
             win.blit(self.image_heart, (760 - (20 * i), 15))
+        if self.hearts <= 0:
+            self.lose_life()
 
     def gain_heart(self):
         self.hearts += 1
 
     def lose_heart(self):
         self.hearts -= 1
+
+
+    def get_lives(self, win):
+        for i in range(0, self.lives):
+            win.blit(self.image_life, (760 - (20 * i), 35))
+
+    def gain_life(self):
+        self.lives += 1
+
+    def lose_life(self):
+        self.lives -= 1
+        self.pos = vec(self.startX, self.startY)
+        self.hearts = 3
