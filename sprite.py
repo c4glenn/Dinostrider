@@ -25,13 +25,6 @@ class Sprite(pygame.sprite.Sprite):
     def update_rectangle(self):
         self.rect.midbottom = self.pos
 
-    def move_bounce(self):
-        if self.bounds:
-            if self.pos.x + self.rect.width > self.bounds.right:
-                pass
-            if self.pos.x < self.bounds.left:
-                pass
-
 
 class FacingSprite(Sprite):
     def __init__(self, start_x, start_y, height, width, imagesDir):
@@ -51,3 +44,10 @@ class FacingSprite(Sprite):
             win.blit(self.images_right[self.walk_count // 3],
                      self.rect.topleft)
             self.walk_count += 1
+
+    def move(self):
+        if self.bounds:
+            if self.pos.x + self.rect.width > self.bounds.right:
+                self.facing_left = False
+            if self.pos.x < self.bounds.left:
+                self.facing_left = True
