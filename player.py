@@ -43,10 +43,11 @@ class Player(Sprite):
         self.get_hearts(win)
         self.get_lives(win)
         #pygame.draw.rect(win, (255,0,0), self.footbox, 2)
-        # pygame.draw.rect(win, (255, 0, 0), self.rect, 2)
+        pygame.draw.rect(win, (255, 0, 0), self.rect, 2)
 
-    def hit(self):
+    def hit(self, enemy_rect):
         self.walk_count = 0
+        self.hearts -= 1
 
     def move_left(self):
         self.acc = vec(0, self.grav)
@@ -73,15 +74,21 @@ class Player(Sprite):
             self.pos.y += 5
 
     def touch_down(self, platform_rect, friction):
-        if self.rect.top >= platform_rect.top and self.rect.top <= platform_rect.bottom:
-            self.vel.y = 0
-            self.rect.top = platform_rect.bottom
         if self.rect.bottom >= platform_rect.top and self.rect.bottom <= platform_rect.bottom:
             if self.pos.x >= platform_rect.left and self.pos.x <= platform_rect.right:
                 self.vel.y = 0
                 self.pos.y = platform_rect.top
                 self.jump_count = 0
                 self.friction = friction
+        elif self.rect.top >= platform_rect.top and self.rect.top <= platform_rect.bottom:
+            self.vel.y = 0
+            self.pos.y = platform_rect.bottom + self.rect.height
+        elif self.rect.right >= platform_rect.left and self.rect.right <= platform_rect.centerx:
+            self.vel.x = 0
+            self.pos.x = platform_rect.left - self.rect.width // 2
+        elif self.rect.left <= platform_rect.right:
+            self.vel.x = 0
+            self.pos.x = platform_rect.right + self.rect.width // 2
 
     def update_location(self, screen_height, screen_width):
         self.acc.y = self.grav
@@ -89,7 +96,7 @@ class Player(Sprite):
         self.acc.x += self.vel.x * self.friction
 
         self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
+        self.pos += self.vel + self.acc
         self.acc = vec(0, self.grav)
 
         if self.pos.x + self.rect.width > screen_width:
