@@ -22,6 +22,7 @@ class Player(FacingSprite):
         self.lives = 3
         self.startX = startX
         self.startY = startY
+        self.bounds = pygame.Rect(0, 0, 800, 480)
 
     def draw(self, win):
         super().draw(win)
@@ -33,9 +34,19 @@ class Player(FacingSprite):
         #pygame.draw.rect(win, (255,0,0), self.footbox, 2)
         # pygame.draw.rect(win, (255, 0, 0), self.rect, 2)
 
-    def hit(self, enemy_rect):
-        self.walk_count = 0
-        self.hearts -= 1
+    def hit(self, enemy):
+        print(self.rect, enemy.rect)
+        print(self.rect.bottom, enemy.rect.centery)
+        if self.rect.bottom <= (enemy.rect.centery - (enemy.rect.height // 4)
+                                ) and self.rect.bottom >= enemy.rect.top:
+            enemy.die()
+        else:
+            if enemy.rect.left <= self.rect.left:
+                enemy.knockback(left=True)
+            else:
+                enemy.knockback(left=False)
+            self.walk_count = 0
+            self.hearts -= 1
 
     def move_left(self):
         self.acc = vec(0, self.grav)

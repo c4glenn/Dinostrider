@@ -4,7 +4,7 @@ import pygame
 
 class slime(enemy):
     def __init__(self, x, y, Vel, Path):
-        super().__init__(x, y, 50, 50, Path)
+        super().__init__(x, y, 50, 60, Path, Vel)
 
     def draw(self, win):
-        pygame.draw.rect(win, (0, 200, 0), self.rect)
+        super().draw(win)

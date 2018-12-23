@@ -19,8 +19,8 @@ class Game:
                                             self.screen_height))
         pygame.display.set_caption("Dinostrider")
 
-        music = pygame.mixer.music.load('Sound/music.wav')
-        pygame.mixer.music.play(-1)
+        # music = pygame.mixer.music.load('Sound/music.wav')
+        # pygame.mixer.music.play(-1)
 
     def start_screen(self):
         start_text = pygame.font.SysFont('Arial', 50).render(
@@ -64,14 +64,12 @@ class Game:
 
             for bullet in bullets:
                 remove = False
-                print(bullet.rect)
                 hits = pygame.sprite.spritecollide(bullet, level.platforms,
                                                    False)
                 if hits:
-                    print(hits)
                     remove = True
                 if (bullet.pos.x < self.screen_width) and (bullet.pos.x > 0):
-                    bullet.pos.x += bullet.vel
+                    bullet.update_location()
                 else:
                     remove = True
 
@@ -124,11 +122,16 @@ class Game:
             level.draw(self.win)
             dino.draw(self.win)
             for enemy in level.enemys:
+                enemy.move()
                 enemy.draw(self.win)
 
             hits = pygame.sprite.spritecollide(dino, level.platforms, False)
             for i in range(0, len(hits)):
                 dino.touch_down(hits[i].rect, hits[i].friction)
+
+            hits = pygame.sprite.spritecollide(dino, level.enemys, False)
+            for i in range(0, len(hits)):
+                dino.hit(hits[i])
 
             for bullet in bullets:
                 bullet.draw(self.win)

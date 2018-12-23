@@ -5,7 +5,7 @@ vec = pygame.math.Vector2
 
 
 class Sprite(pygame.sprite.Sprite):
-    def __init__(self, start_x, start_y, height, width):
+    def __init__(self, start_x, start_y, height, width, vel=vec(0, 0)):
         #pygame.sprite.Sprite.__init__(self)
         super().__init__()
         self.pos = vec(start_x, start_y)
@@ -27,12 +27,19 @@ class Sprite(pygame.sprite.Sprite):
 
 
 class FacingSprite(Sprite):
-    def __init__(self, start_x, start_y, height, width, imagesDir):
-        super().__init__(start_x, start_y, height, width)
+    def __init__(self,
+                 start_x,
+                 start_y,
+                 height,
+                 width,
+                 imagesDir,
+                 vel=vec(0, 0)):
+        super().__init__(start_x, start_y, height, width, vel)
         self.images_right = self.load(imagesDir + '/Right/*.png')
         self.images_left = self.load(imagesDir + '/Left/*.png')
         self.facing_left = False
         self.walk_count = 0
+        self.vel = vel
 
     def draw(self, win):
         if self.walk_count + 1 >= 27:
@@ -44,10 +51,16 @@ class FacingSprite(Sprite):
             win.blit(self.images_right[self.walk_count // 3],
                      self.rect.topleft)
             self.walk_count += 1
+        pygame.draw.rect(win, (255, 0, 0), self.bounds, 2)
+        pygame.draw.rect(win, (255, 0, 0), self.rect, 1)
 
     def move(self):
         if self.bounds:
-            if self.pos.x + self.rect.width > self.bounds.right:
-                self.facing_left = False
-            if self.pos.x < self.bounds.left:
+            if self.pos.x + (self.rect.width // 2) > self.bounds.right:
                 self.facing_left = True
+                self.vel.x = -self.vel.x
+            if self.pos.x < self.bounds.left:
+                self.facing_left = False
+                self.vel.x = -self.vel.x
+            self.pos += self.vel
+        self.update_rectangle()
