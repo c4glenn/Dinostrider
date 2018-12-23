@@ -13,5 +13,8 @@ class Projectile(Sprite):
     def draw(self, win):
         pygame.draw.circle(win, self.color, (int(self.pos.x), int(self.pos.y)),
                            self.radius)
-        self.update_rectangle()
         #pygame.draw.rect(win, (255, 0, 0), self.rect)
+
+    def update_location(self):
+        self.pos.x += self.vel
+        self.update_rectangle()
