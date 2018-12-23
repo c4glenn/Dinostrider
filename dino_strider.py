@@ -5,7 +5,6 @@ from projectile import Projectile
 from game_platform import Platform
 from Level import level
 from Level1 import level1
-from Enemies import enemy
 from Slime import slime
 
 
@@ -140,9 +139,9 @@ class Game:
             for i in range(0, len(hits)):
                 dino.hit(hits[i])
                 if dino.rect.bottom <= (
-                        enemy.rect.centery - (enemy.rect.height // 4)
-                ) and dino.rect.bottom >= enemy.rect.top:
-                    score += 10
+                        hits[i].rect.centery - (hits[i].rect.height // 4)
+                ) and dino.rect.bottom >= hits[i].rect.top:
+                    score += 20
 
             for bullet in bullets:
                 bullet.draw(self.win)

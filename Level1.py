@@ -38,6 +38,9 @@ class level1(level):
 
         self.enemys.add(
             slime(700, 445, vec(3, 0), pygame.Rect(600, 400, 200, 40)))
+        self.enemys.add(
+            slime(20, 185, vec(3, 0),
+                  pygame.Rect(0, screen_height - 400, 200, 40)))
 
     def draw(self, win):
         for platform in self.platforms:
