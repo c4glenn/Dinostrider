@@ -35,8 +35,6 @@ class Player(FacingSprite):
         # pygame.draw.rect(win, (255, 0, 0), self.rect, 2)
 
     def hit(self, enemy):
-        print(self.rect, enemy.rect)
-        print(self.rect.bottom, enemy.rect.centery)
         if self.rect.bottom <= (enemy.rect.centery - (enemy.rect.height // 4)
                                 ) and self.rect.bottom >= enemy.rect.top:
             enemy.die()
