@@ -5,6 +5,7 @@ from projectile import Projectile
 from game_platform import Platform
 from Level import level
 from Level1 import level1
+from Enemies import enemy
 from Slime import slime
 
 
@@ -71,6 +72,11 @@ class Game:
                 if (bullet.pos.x < self.screen_width) and (bullet.pos.x > 0):
                     bullet.update_location()
                 else:
+                    remove = True
+
+                hits = pygame.sprite.spritecollide(bullet, level.enemys, False)
+                for i in range(0, len(hits)):
+                    hits[i].hit()
                     remove = True
 
                 if remove:
