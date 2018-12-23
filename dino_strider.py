@@ -76,6 +76,7 @@ class Game:
 
                 hits = pygame.sprite.spritecollide(bullet, level.enemys, False)
                 for i in range(0, len(hits)):
+                    score += 5
                     hits[i].hit()
                     remove = True
 
@@ -138,6 +139,10 @@ class Game:
             hits = pygame.sprite.spritecollide(dino, level.enemys, False)
             for i in range(0, len(hits)):
                 dino.hit(hits[i])
+                if dino.rect.bottom <= (
+                        enemy.rect.centery - (enemy.rect.height // 4)
+                ) and dino.rect.bottom >= enemy.rect.top:
+                    score += 10
 
             for bullet in bullets:
                 bullet.draw(self.win)

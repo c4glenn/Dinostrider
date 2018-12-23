@@ -13,6 +13,8 @@ class Sprite(pygame.sprite.Sprite):
         self.bounds = None
 
     def draw(self, win):
+        # pygame.draw.rect(win, (255, 0, 0), self.bounds, 2)
+        # pygame.draw.rect(win, (255, 0, 0), self.rect, 1)
         pass
 
     def load(self, path):
@@ -42,6 +44,7 @@ class FacingSprite(Sprite):
         self.vel = vel
 
     def draw(self, win):
+        super().draw(win)
         if self.walk_count + 1 >= 27:
             self.walk_count = 0
         if self.facing_left:
@@ -51,8 +54,6 @@ class FacingSprite(Sprite):
             win.blit(self.images_right[self.walk_count // 3],
                      self.rect.topleft)
             self.walk_count += 1
-        pygame.draw.rect(win, (255, 0, 0), self.bounds, 2)
-        pygame.draw.rect(win, (255, 0, 0), self.rect, 1)
 
     def move(self):
         if self.bounds:
