@@ -37,7 +37,7 @@ class level1(level):
                      100, 30, (0, 0, 0), 0, 0, -0.12))  # plat 3
 
         self.enemys.add(
-            slime(700, 435, vec(3, 0), pygame.Rect(600, 400, 200, 40)))
+            slime(700, 445, vec(3, 0), pygame.Rect(600, 400, 200, 40)))
 
     def draw(self, win):
         for platform in self.platforms:
