@@ -73,7 +73,7 @@ class Player(FacingSprite):
             self.pos.y += 5
 
     def touch_down(self, platform_rect, friction):
-        if self.rect.bottom >= platform_rect.top and self.rect.bottom <= platform_rect.bottom:
+        if self.rect.bottom >= platform_rect.top and self.rect.bottom <= platform_rect.centery:
             if self.pos.x >= platform_rect.left and self.pos.x <= platform_rect.right:
                 # print('top', self.rect, platform_rect)
                 self.vel.y = 0
@@ -126,9 +126,13 @@ class Player(FacingSprite):
 
     def lose_life(self):
         self.lives -= 1
-        self.pos = vec(self.startX, self.startY)
         self.dead = True
-        self.hearts = 3
 
     def reset(self):
         self.dead = False
+        self.pos = vec(self.startX, self.startY)
+        self.hearts = 3
+
+    def slide(self, distancex, distancey):
+        self.pos.x += distancex
+        self.pos.y += distancey

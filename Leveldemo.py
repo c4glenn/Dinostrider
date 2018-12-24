@@ -6,13 +6,13 @@ from Slime import slime
 from sprite import vec
 
 
-class level1(level):
+class leveldemo(level):
     def __init__(self, screen_height, screen_width):
         super().__init__(screen_height, screen_width)
         self.background = pygame.image.load('Images/bg.jpg')
         self.platforms.empty()
         self.enemys.empty()
-        self.level_limit = 1000
+        self.level_limit = -700
         half_screen_width = self.screen_width // 2
         level_platforms = [
             [
@@ -26,7 +26,7 @@ class level1(level):
             ],  # special area
             [
                 pygame.Rect((self.screen_width // 2) + 200,
-                            self.screen_height - 40, 700, 40), (0, 0, 0), 0,
+                            self.screen_height - 40, 1800, 40), (0, 0, 0), 0,
                 -0.099
             ],  # ground 2
             [
@@ -43,8 +43,8 @@ class level1(level):
                 pygame.Rect(self.screen_width // 2 + 50,
                             self.screen_height // 2 + 50, 100, 30), (0, 0, 0),
                 0, -0.12
-            ]
-        ]  # stair 3
+            ]  # stair 3
+        ]
         for platform in level_platforms:
             self.platforms.add(Platform.from_list(platform))
 
@@ -55,4 +55,4 @@ class level1(level):
                   pygame.Rect(0, screen_height - 400, 200, 40)))
 
     def get_player_start_position(self):
-        return (205, 410)
+        return (10, 410)

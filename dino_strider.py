@@ -4,8 +4,9 @@ from player import Player
 from projectile import Projectile
 from game_platform import Platform
 from Level import level
-from Level1 import level1
+from Leveldemo import leveldemo
 from Slime import slime
+from sprite import vec
 
 
 class Game:
@@ -15,7 +16,12 @@ class Game:
         pygame.init()
         self.screen_width = 800
         self.screen_height = 480
-        self.levels = [level1(self.screen_height, self.screen_width)]
+        self.score = 0
+        self.levels = [
+            leveldemo(self.screen_height, self.screen_width),
+            leveldemo(self.screen_height, self.screen_width)
+        ]
+        self.level = self.levels[0]
         self.win = pygame.display.set_mode((self.screen_width,
                                             self.screen_height))
         pygame.display.set_caption("Dinostrider")
@@ -36,25 +42,55 @@ class Game:
                 if event.type == pygame.QUIT:
                     return False
 
+    def end_screen(self, dino):
+        pygame.draw.rect(self.win, (0, 0, 0), (0, 0, 800, 480))
+        end_text = pygame.font.SysFont('Arial', 50).render(
+            'You Win', 1, (255, 0, 0))
+        end_score = pygame.font.SysFont('Arial', 20).render(
+            'Final Score: ' + str(self.score), 1, (255, 0, 0))
+        end_hearts = pygame.font.SysFont('Arial', 20).render(
+            'Final Hearts: ' + str(dino.hearts), 1, (255, 0, 0))
+        end_lives = pygame.font.SysFont('Arial', 20).render(
+            'Final Lives: ' + str(dino.lives), 1, (255, 0, 0))
+        self.win.blit(end_text, (400 - (end_text.get_width() / 2), 100))
+        self.win.blit(end_score, (400 - (end_score.get_width() / 2), 200))
+        self.win.blit(end_hearts, (400 - (end_hearts.get_width() / 2), 300))
+        self.win.blit(end_lives, (400 - (end_lives.get_width() / 2), 350))
+        pygame.display.update()
+        while True:
+            keys = pygame.key.get_pressed()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        return False
+
     def game_loop(self):
         """ This is the main game loop """
-
-        score = 0
         clock = pygame.time.Clock()
         bullet_sound = pygame.mixer.Sound('Sound/bullet.wav')
         score_font = pygame.font.SysFont('arial', 30, True)
         shoot_loop = 0
-        level = level1(self.screen_height, self.screen_width)
         bullets = []
-        dino = Player(level.get_player_start_position())
+        dino = Player(self.level.get_player_start_position())
 
         while True:
             clock.tick(27)
-
-            if dino.pos.x + 20 > self.screen_width + level.world_shift_x:
-                level.shift_world(-20, 0)
-            if dino.pos.x - 20 < 0 + level.world_shift_x:
-                level.shift_world(20, 0)
+            if dino.pos.x + 350 > self.screen_width:
+                self.level.shift_world(-5, 0)
+                dino.slide(-5, 0)
+            if dino.pos.x - 350 <= 0 and self.level.world_shift_x < 0:
+                self.level.shift_world(5, 0)
+                dino.slide(5, 0)
+            print(self.level.world_shift_x, self.level.level_limit)
+            if self.level.world_shift_x <= self.level.level_limit:
+                try:
+                    self.level = self.levels[self.levels.index(self.level) + 1]
+                    dino.reset()
+                except:
+                    if self.end_screen(dino):
+                        return False
 
             if shoot_loop > 0:
                 shoot_loop += 1
@@ -68,7 +104,7 @@ class Game:
                     if event.key == pygame.K_UP:
                         dino.jump()
                     if event.key == pygame.K_BACKQUOTE:
-                        for enemy in level.enemys:
+                        for enemy in self.level.enemys:
                             enemy.debug_draw(
                                 draw_bounds=not enemy.draw_bounds,
                                 draw_hitbox=not enemy.draw_hitbox)
@@ -76,8 +112,8 @@ class Game:
 
             for bullet in bullets:
                 remove = False
-                hits = pygame.sprite.spritecollide(bullet, level.platforms,
-                                                   False)
+                hits = pygame.sprite.spritecollide(bullet,
+                                                   self.level.platforms, False)
                 if hits:
                     remove = True
                 if (bullet.pos.x < self.screen_width) and (bullet.pos.x > 0):
@@ -85,9 +121,10 @@ class Game:
                 else:
                     remove = True
 
-                hits = pygame.sprite.spritecollide(bullet, level.enemys, False)
+                hits = pygame.sprite.spritecollide(bullet, self.level.enemys,
+                                                   False)
                 for i in range(0, len(hits)):
-                    score += 5
+                    self.score += 5
                     hits[i].hit()
                     remove = True
 
@@ -122,34 +159,28 @@ class Game:
 
             dino.update_location(self.screen_height, self.screen_width)
 
-            self.win.blit(level.background, (0, 0))
-            text = score_font.render('Score:' + str(score), 1, (0, 0, 0))
+            self.win.blit(self.level.background, (0, 0))
+            text = score_font.render('Score:' + str(self.score), 1, (0, 0, 0))
             self.win.blit(text, (0, 10))
 
-            hits = pygame.sprite.spritecollide(dino, level.platforms, False)
+            hits = pygame.sprite.spritecollide(dino, self.level.platforms,
+                                               False)
             for i in range(0, len(hits)):
                 dino.touch_down(hits[i].rect, hits[i].friction)
 
-            hits = pygame.sprite.spritecollide(dino, level.enemys, False)
+            hits = pygame.sprite.spritecollide(dino, self.level.enemys, False)
             for i in range(0, len(hits)):
                 dino.hit(hits[i])
                 if dino.rect.bottom <= (
                         hits[i].rect.centery - (hits[i].rect.height // 4)
                 ) and dino.rect.bottom >= hits[i].rect.top:
-                    score += 20
+                    self.score += 20
             if dino.dead:
-                print(0 - level.world_shift_x, 0 - level.world_shift_y)
-                level.shift_world(0 - level.world_shift_x,
-                                  0 - level.world_shift_y)
+                self.level.shift_world(0 - self.level.world_shift_x,
+                                       0 - self.level.world_shift_y)
                 dino.reset()
-            level.draw(self.win)
+            self.level.draw(self.win)
             dino.draw(self.win)
-            # for enemy in level.enemys:
-            #     enemy.move()
-            #     enemy.draw(self.win)
-            # for platform in level.platforms:
-            #     platform.move()
-            #     platform.draw(self.win)
             for bullet in bullets:
                 bullet.draw(self.win)
             pygame.display.update()
