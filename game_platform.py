@@ -29,7 +29,7 @@ class Platform(Sprite):
 
     @classmethod
     def from_list(cls, params):
-        try:
-            return cls(params[0], params[1], params[2], params[3], params[4])
-        except:
+        if len(params) == 4:
             return cls(params[0], params[1], params[2], params[3])
+        else:
+            return cls(params[0], params[1], params[2], params[3], params[4])
