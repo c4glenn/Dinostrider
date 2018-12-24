@@ -34,11 +34,12 @@ class FacingSprite(Sprite):
                  start_y,
                  height,
                  width,
-                 imagesDir,
+                 imagesDir=None,
                  vel=vec(0, 0)):
         super().__init__(start_x, start_y, height, width, vel)
-        self.images_right = self.load(imagesDir + '/Right/*.png')
-        self.images_left = self.load(imagesDir + '/Left/*.png')
+        if imagesDir:
+            self.images_right = self.load(imagesDir + '/Right/*.png')
+            self.images_left = self.load(imagesDir + '/Left/*.png')
         self.facing_left = False
         self.walk_count = 0
         self.vel = vel
@@ -65,3 +66,6 @@ class FacingSprite(Sprite):
                 self.vel.x = -self.vel.x
             self.pos += self.vel
         self.update_rectangle()
+
+    def update(self):
+        sef.move()

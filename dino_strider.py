@@ -125,11 +125,6 @@ class Game:
             self.win.blit(level.background, (0, 0))
             text = score_font.render('Score:' + str(score), 1, (0, 0, 0))
             self.win.blit(text, (0, 10))
-            level.draw(self.win)
-            dino.draw(self.win)
-            for enemy in level.enemys:
-                enemy.move()
-                enemy.draw(self.win)
 
             hits = pygame.sprite.spritecollide(dino, level.platforms, False)
             for i in range(0, len(hits)):
@@ -142,7 +137,14 @@ class Game:
                         hits[i].rect.centery - (hits[i].rect.height // 4)
                 ) and dino.rect.bottom >= hits[i].rect.top:
                     score += 20
-
+            level.draw(self.win)
+            dino.draw(self.win)
+            # for enemy in level.enemys:
+            #     enemy.move()
+            #     enemy.draw(self.win)
+            # for platform in level.platforms:
+            #     platform.move()
+            #     platform.draw(self.win)
             for bullet in bullets:
                 bullet.draw(self.win)
             pygame.display.update()
