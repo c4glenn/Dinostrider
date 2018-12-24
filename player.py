@@ -4,7 +4,8 @@ from sprite import vec
 
 
 class Player(FacingSprite):
-    def __init__(self, startX, startY):
+    def __init__(self, start):
+        (startX, startY) = start
         super().__init__(startX, startY, 52, 52, 'Images/Dino')
         self.player_acc = 0.5
         self.vel = vec(0, 0)
@@ -23,6 +24,7 @@ class Player(FacingSprite):
         self.startX = startX
         self.startY = startY
         self.bounds = pygame.Rect(0, 0, 800, 480)
+        self.dead = False
 
     def draw(self, win):
         super().draw(win)
@@ -99,12 +101,6 @@ class Player(FacingSprite):
         self.vel += self.acc
         self.pos += self.vel + self.acc
         self.acc = vec(0, self.grav)
-
-        if self.pos.x + self.rect.width > screen_width:
-            self.pos.x = 0
-        if self.pos.x < 0:
-            self.pos.x = screen_width - self.rect.width
-
         if self.pos.y > screen_height:
             self.lose_life()
         self.update_rectangle()
@@ -131,4 +127,8 @@ class Player(FacingSprite):
     def lose_life(self):
         self.lives -= 1
         self.pos = vec(self.startX, self.startY)
+        self.dead = True
         self.hearts = 3
+
+    def reset(self):
+        self.dead = False

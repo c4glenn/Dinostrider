@@ -64,6 +64,7 @@ class FacingSprite(Sprite):
             if self.pos.x < self.bounds.left:
                 self.facing_left = False
                 self.vel.x = -self.vel.x
+
             self.pos += self.vel
         self.update_rectangle()
 

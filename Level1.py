@@ -53,5 +53,5 @@ class level1(level):
             slime(20, 185, vec(3, 0),
                   pygame.Rect(0, screen_height - 400, 200, 40)))
 
-    def draw(self, win):
-        super().draw(win)
+    def get_player_start_position(self):
+        return (25, 410)

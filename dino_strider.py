@@ -15,6 +15,7 @@ class Game:
         pygame.init()
         self.screen_width = 800
         self.screen_height = 480
+        self.levels = [level1(self.screen_height, self.screen_width)]
         self.win = pygame.display.set_mode((self.screen_width,
                                             self.screen_height))
         pygame.display.set_caption("Dinostrider")
@@ -37,19 +38,24 @@ class Game:
 
     def game_loop(self):
         """ This is the main game loop """
+
         score = 0
         clock = pygame.time.Clock()
         bullet_sound = pygame.mixer.Sound('Sound/bullet.wav')
         score_font = pygame.font.SysFont('arial', 30, True)
-        dino = Player(10, 410)
         shoot_loop = 0
-        all_sprites = pygame.sprite.Group()
-        all_sprites.add(dino)
-        bullets = []
         level = level1(self.screen_height, self.screen_width)
+        bullets = []
+        dino = Player(level.get_player_start_position())
 
         while True:
             clock.tick(27)
+
+            if dino.pos.x + 20 > self.screen_width + level.world_shift_x:
+                level.shift_world(-20, 0)
+            if dino.pos.x - 20 < 0 + level.world_shift_x:
+                level.shift_world(20, 0)
+
             if shoot_loop > 0:
                 shoot_loop += 1
             if shoot_loop > 4:
@@ -95,10 +101,10 @@ class Game:
                 return
 
             if keys[pygame.K_COMMA]:
-                dino.gain_heart()
+                level.shift_world(10, 0)
 
             if keys[pygame.K_PERIOD]:
-                dino.lose_heart()
+                level.shift_world(-10, 0)
 
             if keys[pygame.K_RIGHTBRACKET]:
                 dino.gain_life()
@@ -137,6 +143,11 @@ class Game:
                         hits[i].rect.centery - (hits[i].rect.height // 4)
                 ) and dino.rect.bottom >= hits[i].rect.top:
                     score += 20
+            if dino.dead:
+                print(0 - level.world_shift_x, 0 - level.world_shift_y)
+                level.shift_world(0 - level.world_shift_x,
+                                  0 - level.world_shift_y)
+                dino.reset()
             level.draw(self.win)
             dino.draw(self.win)
             # for enemy in level.enemys:
