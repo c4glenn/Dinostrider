@@ -14,36 +14,37 @@ class level1(level):
         self.enemys.empty()
         self.level_limit = 1000
         half_screen_width = self.screen_width // 2
-        level_platforms = [[
-            pygame.Rect(0, self.screen_height - 40, half_screen_width - 200,
-                        40), (0, 0, 0), 0, -0.099
-        ],
-                           [
-                               pygame.Rect(0, self.screen_height - 300,
-                                           (self.screen_width // 2) - 200, 40),
-                               (0, 0, 0), 0, -0.099
-                           ],
-                           [
-                               pygame.Rect((self.screen_width // 2) + 200,
-                                           self.screen_height - 40,
-                                           (self.screen_width // 2) - 40, 40),
-                               (0, 0, 0), 0, -0.099
-                           ],
-                           [
-                               pygame.Rect(self.screen_width // 2 - 150,
-                                           self.screen_height // 2 + 150, 100,
-                                           30), (0, 0, 0), 0, -0.12
-                           ],
-                           [
-                               pygame.Rect(self.screen_width // 2 - 60,
-                                           self.screen_height // 2 + 100, 100,
-                                           30), (0, 0, 0), 0, -0.12
-                           ],
-                           [
-                               pygame.Rect(self.screen_width // 2 + 50,
-                                           self.screen_height // 2 + 50, 100,
-                                           30), (0, 0, 0), 0, -0.12
-                           ]]
+        level_platforms = [
+            [
+                pygame.Rect(0, self.screen_height - 40,
+                            half_screen_width - 200, 40), (0, 0, 0), 0, -0.099
+            ],  # 1st ground
+            [
+                pygame.Rect(0, self.screen_height - 300,
+                            (self.screen_width // 2) - 200, 40), (0, 0, 0), 0,
+                -0.099
+            ],  # special area
+            [
+                pygame.Rect((self.screen_width // 2) + 200,
+                            self.screen_height - 40, 700, 40), (0, 0, 0), 0,
+                -0.099
+            ],  # ground 2
+            [
+                pygame.Rect(self.screen_width // 2 - 150,
+                            self.screen_height // 2 + 150, 100, 30), (0, 0, 0),
+                0, -0.12
+            ],  # stair 1
+            [
+                pygame.Rect(self.screen_width // 2 - 60,
+                            self.screen_height // 2 + 100, 100, 30), (0, 0, 0),
+                0, -0.12
+            ],  # stair 2
+            [
+                pygame.Rect(self.screen_width // 2 + 50,
+                            self.screen_height // 2 + 50, 100, 30), (0, 0, 0),
+                0, -0.12
+            ]
+        ]  # stair 3
         for platform in level_platforms:
             self.platforms.add(Platform.from_list(platform))
 
@@ -54,4 +55,4 @@ class level1(level):
                   pygame.Rect(0, screen_height - 400, 200, 40)))
 
     def get_player_start_position(self):
-        return (25, 410)
+        return (205, 410)
