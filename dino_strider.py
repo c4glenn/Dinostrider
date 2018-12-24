@@ -61,7 +61,6 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
                         dino.jump()
-                        print('jump')
 
             for bullet in bullets:
                 remove = False
