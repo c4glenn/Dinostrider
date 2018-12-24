@@ -11,11 +11,18 @@ class Sprite(pygame.sprite.Sprite):
         self.pos = vec(start_x, start_y)
         self.rect = pygame.Rect(start_x, start_y, width, height)
         self.bounds = None
+        self.draw_bounds = False
+        self.draw_hitbox = False
+
+    def debug_draw(self, draw_bounds=False, draw_hitbox=False):
+        self.draw_bounds = draw_bounds
+        self.draw_hitbox = draw_hitbox
 
     def draw(self, win):
-        # pygame.draw.rect(win, (255, 0, 0), self.bounds, 2)
-        # pygame.draw.rect(win, (255, 0, 0), self.rect, 1)
-        pass
+        if self.draw_bounds:
+            pygame.draw.rect(win, (255, 0, 0), self.bounds, 2)
+        if self.draw_hitbox:
+            pygame.draw.rect(win, (255, 0, 0), self.rect, 1)
 
     def load(self, path):
         total = []

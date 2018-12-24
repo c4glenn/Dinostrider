@@ -67,6 +67,12 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
                         dino.jump()
+                    if event.key == pygame.K_BACKQUOTE:
+                        for enemy in level.enemys:
+                            enemy.debug_draw(
+                                draw_bounds=not enemy.draw_bounds,
+                                draw_hitbox=not enemy.draw_hitbox)
+                        dino.debug_draw(draw_hitbox=not dino.draw_hitbox)
 
             for bullet in bullets:
                 remove = False
@@ -99,18 +105,6 @@ class Game:
 
             if keys[pygame.K_ESCAPE]:
                 return
-
-            if keys[pygame.K_COMMA]:
-                level.shift_world(10, 0)
-
-            if keys[pygame.K_PERIOD]:
-                level.shift_world(-10, 0)
-
-            if keys[pygame.K_RIGHTBRACKET]:
-                dino.gain_life()
-
-            if keys[pygame.K_LEFTBRACKET]:
-                dino.lose_life()
 
             if keys[pygame.K_SPACE] and shoot_loop == 0 and dino.gun:
                 if dino.facing_left:
