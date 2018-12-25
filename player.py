@@ -75,21 +75,21 @@ class Player(FacingSprite):
     def touch_down(self, platform_rect, friction):
         if self.rect.bottom >= platform_rect.top and self.rect.bottom <= platform_rect.centery:
             if self.pos.x >= platform_rect.left and self.pos.x <= platform_rect.right:
-                # print('top', self.rect, platform_rect)
+                #print('top', self.rect, platform_rect)
                 self.vel.y = 0
                 self.pos.y = platform_rect.top
                 self.jump_count = 0
                 self.friction = friction
-        elif self.rect.right >= platform_rect.left and self.rect.right <= platform_rect.centerx:
-            # print('right', self.rect, platform_rect)
-            self.vel.x = 0
-            self.pos.x = platform_rect.left - (self.rect.width // 2)
-        elif self.rect.left <= platform_rect.right and self.rect.left >= platform_rect.centerx:
-            # print('left', self.rect, platform_rect)
+        elif self.rect.left <= platform_rect.right and self.rect.left >= platform_rect.right - 30:
+            #print('left', self.rect, platform_rect)
             self.vel.x = 0
             self.pos.x = platform_rect.right + self.rect.width // 2
+        elif self.rect.right >= platform_rect.left and self.rect.right <= platform_rect.left + 30:
+            #print('right', self.rect, platform_rect)
+            self.vel.x = 0
+            self.pos.x = platform_rect.left - (self.rect.width // 2)
         elif self.rect.top >= platform_rect.centery and self.rect.top <= platform_rect.bottom:
-            # print('Bottom', self.rect, platform_rect)
+            #print('Bottom', self.rect, platform_rect)
             self.vel.y = 0
             self.pos.y = platform_rect.bottom + self.rect.height
 
@@ -126,6 +126,7 @@ class Player(FacingSprite):
         self.lives += 1
 
     def lose_life(self):
+        print('died')
         self.lives -= 1
         self.dead = True
 

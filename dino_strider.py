@@ -77,13 +77,15 @@ class Game:
 
         while True:
             clock.tick(27)
+
+            dino.gun = self.level.dino_gun
+
             if dino.pos.x + 350 > self.screen_width:
                 self.level.shift_world(-5, 0)
                 dino.slide(-5, 0)
             if dino.pos.x - 350 <= 0 and self.level.world_shift_x < 0:
                 self.level.shift_world(5, 0)
                 dino.slide(5, 0)
-            print(self.level.world_shift_x, self.level.level_limit)
             if self.level.world_shift_x <= self.level.level_limit:
                 try:
                     self.level = self.levels[self.levels.index(self.level) + 1]
@@ -142,6 +144,8 @@ class Game:
 
             if keys[pygame.K_ESCAPE]:
                 return
+            if keys[pygame.K_a]:
+                print(dino.pos.x - self.level.world_shift_x)
 
             if keys[pygame.K_SPACE] and shoot_loop == 0 and dino.gun:
                 if dino.facing_left:
