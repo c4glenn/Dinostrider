@@ -101,6 +101,7 @@ class Player(FacingSprite):
         self.vel += self.acc
         self.pos += self.vel + self.acc
         self.acc = vec(0, self.grav)
+
         if self.pos.y > screen_height:
             self.lose_life()
         self.update_rectangle()

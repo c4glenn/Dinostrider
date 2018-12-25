@@ -7,6 +7,7 @@ from Level import level
 from Leveldemo import leveldemo
 from Slime import slime
 from sprite import vec
+from Level1 import level1
 
 
 class Game:
@@ -18,8 +19,7 @@ class Game:
         self.screen_height = 480
         self.score = 0
         self.levels = [
-            leveldemo(self.screen_height, self.screen_width),
-            leveldemo(self.screen_height, self.screen_width)
+            level1(self.screen_height, self.screen_width),
         ]
         self.level = self.levels[0]
         self.win = pygame.display.set_mode((self.screen_width,
