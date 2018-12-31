@@ -3,3 +3,4 @@ venv_447/*
 .vscode/*
 Images/Dino/SourceFiles/*
 __pycache__/*
+*.pyc
