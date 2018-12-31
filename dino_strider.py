@@ -166,7 +166,9 @@ class Game:
             self.win.blit(self.level.background, (0, 0))
             text = score_font.render('Score:' + str(self.score), 1, (0, 0, 0))
             self.win.blit(text, (0, 10))
-
+            speed_elliptical = 123
+            text = score_font.render('Speed:' + str(speed_elliptical)  + "RPM" ,1, (0, 0, 0))
+            self.win.blit(text, (0, 40))
             hits = pygame.sprite.spritecollide(dino, self.level.platforms,
                                                False)
             for i in range(0, len(hits)):
