@@ -8,6 +8,7 @@ from Leveldemo import leveldemo
 from Slime import slime
 from sprite import vec
 from Level1 import level1
+from elliptical import elliptical
 
 
 class Game:
@@ -25,6 +26,7 @@ class Game:
         self.win = pygame.display.set_mode((self.screen_width,
                                             self.screen_height))
         pygame.display.set_caption("Dinostrider")
+        self.ellip = elliptical()
 
         # music = pygame.mixer.music.load('Sound/music.wav')
         # pygame.mixer.music.play(-1)
@@ -52,10 +54,18 @@ class Game:
             'Final Hearts: ' + str(dino.hearts), 1, (255, 0, 0))
         end_lives = pygame.font.SysFont('Arial', 20).render(
             'Final Lives: ' + str(dino.lives), 1, (255, 0, 0))
+        if self.ellip.distance_m >= 1000:
+            distance = str(self.ellip.distance_m / 1000) + ' KM'
+        else:
+            distance = str(self.ellip.distance_m) + ' M'
+        end_distance = pygame.font.SysFont('Arial', 20).render(
+            'Distance Traveled: ' + distance, 1, (255, 0, 0))
         self.win.blit(end_text, (400 - (end_text.get_width() / 2), 100))
         self.win.blit(end_score, (400 - (end_score.get_width() / 2), 200))
         self.win.blit(end_hearts, (400 - (end_hearts.get_width() / 2), 300))
         self.win.blit(end_lives, (400 - (end_lives.get_width() / 2), 350))
+        self.win.blit(end_distance,
+                      (400 - (end_distance.get_width() / 2), 400))
         pygame.display.update()
         while True:
             keys = pygame.key.get_pressed()
@@ -166,8 +176,10 @@ class Game:
             self.win.blit(self.level.background, (0, 0))
             text = score_font.render('Score:' + str(self.score), 1, (0, 0, 0))
             self.win.blit(text, (0, 10))
-            speed_elliptical = 123
-            text = score_font.render('Speed:' + str(speed_elliptical)  + "RPM" ,1, (0, 0, 0))
+            elliptical_values = self.ellip.get_value()
+            speed_elliptical = elliptical_values[1]
+            text = score_font.render('Speed:' + str(speed_elliptical) + " RPM",
+                                     1, (0, 0, 0))
             self.win.blit(text, (0, 40))
             hits = pygame.sprite.spritecollide(dino, self.level.platforms,
                                                False)
