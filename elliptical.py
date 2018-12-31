@@ -11,15 +11,15 @@ DIST_PER_ROTATION_M = (2.0 * 3.1415 * 19.0) / 100.0
 
 
 class Elliptical(object):
-    def _read_sensor():
+    def _read_sensor(self):
         return explorerhat.input.three.read()
 
     def _hardware_loop(self):
         while True:
             start_time = time.time()
-            while _read_sensor():
+            while self._read_sensor():
                 pass
-            while _read_sensor() == False:
+            while self._read_sensor() == False:
                 pass
             end_time = time.time()
             diff = end_time - start_time
