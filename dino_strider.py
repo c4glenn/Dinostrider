@@ -180,7 +180,8 @@ class Game:
                 'Speed:' + str(self.ellip.get_speed()) + " RPM", 1, (0, 0, 0))
             self.win.blit(text, (0, 40))
             heart_rate = 132
-            text = score_font.render('Heart Rate:' + str(heart_rate), 1, (0,0,0))
+            text = score_font.render('Heart Rate:' + str(heart_rate), 1,
+                                     (0, 0, 0))
             self.win.blit(text, (0, 70))
 
             hits = pygame.sprite.spritecollide(dino, self.level.platforms,

@@ -15,12 +15,14 @@ class Elliptical(object):
         return explorerhat.input.three.read()
 
     def _hardware_loop(self):
-        while True:
+        while not self.thread.stopped:
             start_time = time.time()
             while self._read_sensor():
-                pass
+                if self.thread.stopped:
+                    return
             while self._read_sensor() == False:
-                pass
+                if self.thread.stopped:
+                    return
             end_time = time.time()
             diff = end_time - start_time
             self.speed_RPM = (60 / diff)
@@ -33,7 +35,7 @@ class Elliptical(object):
         if hardware:
             self.thread = threading.Thread(target=self._hardware_loop)
             self.thread.stopped = False
-            self.thread.start() 
+            self.thread.start()
 
     def get_speed(self):
         return self.speed_RPM
@@ -41,10 +43,15 @@ class Elliptical(object):
     def get_distance(self):
         return self.num_rotations * DIST_PER_ROTATION_M
 
-if __name__ == "__main__":
-   elliptical = Elliptical()
-   print("Init finished")
-   while True:
-      print("Speed: {0} Distance {1}".format(int(elliptical.get_speed()), int(elliptical.get_distance())))
-      time.sleep(1)
+    def stop(self):
+        if hardware:
+            self.thread.stopped = True
 
+
+if __name__ == "__main__":
+    elliptical = Elliptical()
+    print("Init finished")
+    while True:
+        print("Speed: {0} Distance {1}".format(
+            int(elliptical.get_speed()), int(elliptical.get_distance())))
+        time.sleep(1)
