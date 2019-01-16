@@ -8,8 +8,6 @@ from Leveldemo import leveldemo
 from Slime import slime
 from sprite import vec
 from Level1 import level1
-from elliptical import Elliptical
-from test_buttons import Button
 
 
 class Game:
@@ -27,8 +25,6 @@ class Game:
         self.win = pygame.display.set_mode((self.screen_width,
                                             self.screen_height))
         pygame.display.set_caption("Dinostrider")
-        self.ellip = Elliptical()
-        self.Rbutton = Button('two')
 
         # music = pygame.mixer.music.load('Sound/music.wav')
         # pygame.mixer.music.play(-1)
@@ -56,18 +52,10 @@ class Game:
             'Final Hearts: ' + str(dino.hearts), 1, (255, 0, 0))
         end_lives = pygame.font.SysFont('Arial', 20).render(
             'Final Lives: ' + str(dino.lives), 1, (255, 0, 0))
-        if self.ellip.get_distance() >= 1000:
-            distance = "{0:.2f} KM".format(self.ellip.get_distance() / 1000)
-        else:
-            distance = "{0:.2f} M".format(self.ellip.get_distance())
-        end_distance = pygame.font.SysFont('Arial', 20).render(
-            'Distance Traveled: ' + distance, 1, (255, 0, 0))
         self.win.blit(end_text, (400 - (end_text.get_width() / 2), 100))
         self.win.blit(end_score, (400 - (end_score.get_width() / 2), 200))
         self.win.blit(end_hearts, (400 - (end_hearts.get_width() / 2), 300))
         self.win.blit(end_lives, (400 - (end_lives.get_width() / 2), 350))
-        self.win.blit(end_distance,
-                      (400 - (end_distance.get_width() / 2), 400))
         pygame.display.update()
         while True:
             keys = pygame.key.get_pressed()
@@ -88,7 +76,7 @@ class Game:
         dino = Player(self.level.get_player_start_position())
 
         while True:
-            clock.tick(40)
+            clock.tick(27)
 
             dino.gun = self.level.dino_gun
 
@@ -149,7 +137,7 @@ class Game:
 
             if keys[pygame.K_LEFT]:
                 dino.move_left()
-            elif keys[pygame.K_RIGHT] or self.Rbutton.get_state():
+            elif keys[pygame.K_RIGHT]:
                 dino.move_right()
             else:
                 dino.stop()
@@ -178,14 +166,12 @@ class Game:
             self.win.blit(self.level.background, (0, 0))
             text = score_font.render('Score:' + str(self.score), 1, (0, 0, 0))
             self.win.blit(text, (0, 10))
-            text = score_font.render(
-                'Speed:' + str(self.ellip.get_speed()) + " RPM", 1, (0, 0, 0))
+            speed_elliptical = 123
+            text = score_font.render('Speed:' + str(speed_elliptical)  + "RPM" ,1, (0, 0, 0))
             self.win.blit(text, (0, 40))
             heart_rate = 132
-            text = score_font.render('Heart Rate:' + str(heart_rate), 1,
-                                     (0, 0, 0))
+            text = score_font.render("Heart Rate:" + str(heart_rate) + "BPM",1, (0, 0, 0))
             self.win.blit(text, (0, 70))
-
             hits = pygame.sprite.spritecollide(dino, self.level.platforms,
                                                False)
             for i in range(0, len(hits)):
@@ -213,4 +199,3 @@ game = Game()
 if game.start_screen():
     game.game_loop()
 pygame.quit()
-game.ellip.stop()
