@@ -76,4 +76,4 @@ class FacingSprite(Sprite):
         self.update_rectangle()
 
     def update(self):
-        sef.move()
+        self.move()
