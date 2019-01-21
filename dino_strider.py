@@ -28,7 +28,10 @@ class Game:
                                             self.screen_height))
         pygame.display.set_caption("Dinostrider")
         self.ellip = Elliptical()
-        self.Rbutton = Button('two')
+        self.Rbutton = Button(2)
+        self.Lbutton = Button(4)
+        self.Jbutton = Button(1)
+        self.Sbutton = Button(3)
 
         # music = pygame.mixer.music.load('Sound/music.wav')
         # pygame.mixer.music.play(-1)
@@ -45,6 +48,8 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return False
+            if self.Sbutton:
+                return True
 
     def end_screen(self, dino):
         pygame.draw.rect(self.win, (0, 0, 0), (0, 0, 800, 480))
@@ -77,6 +82,8 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         return False
+            if self.Sbutton:
+                return False
 
     def game_loop(self):
         """ This is the main game loop """
@@ -124,6 +131,13 @@ class Game:
                                 draw_hitbox=not enemy.draw_hitbox)
                         dino.debug_draw(draw_hitbox=not dino.draw_hitbox)
 
+            if not self.Jbutton.get_state():
+                jump_flag = True
+            if self.Jbutton.get_state():
+                if jump_flag:
+                    dino.jump()
+                    jump_flag = False
+
             for bullet in bullets:
                 remove = False
                 hits = pygame.sprite.spritecollide(bullet,
@@ -147,7 +161,7 @@ class Game:
 
             keys = pygame.key.get_pressed()
 
-            if keys[pygame.K_LEFT]:
+            if keys[pygame.K_LEFT] or self.Lbutton.get_state():
                 dino.move_left()
             elif keys[pygame.K_RIGHT] or self.Rbutton.get_state():
                 dino.move_right()
@@ -159,7 +173,8 @@ class Game:
             if keys[pygame.K_a]:
                 print(dino.pos.x - self.level.world_shift_x)
 
-            if keys[pygame.K_SPACE] and shoot_loop == 0 and dino.gun:
+            if (keys[pygame.K_SPACE] or
+                    self.Sbutton.get_state()) and shoot_loop == 0 and dino.gun:
                 if dino.facing_left:
                     facing = -1
                 else:

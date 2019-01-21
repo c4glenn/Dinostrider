@@ -15,9 +15,21 @@ class leveltemplate(level):  #change to level#        EX: class level1(level):
         self.enemys.empty()
         self.dino_gun = False  # should he have a gun
         self.level_limit = -700  #changes per level
-        level_platforms = [(0, screen_height - 5, -self.level_limit, 5),
-                           (0, 0, 0), 0,
-                           -0.12]  #populate with platforms 1 example in there
+        level_platforms = [
+            [
+                pygame.Rect(-5, 0, 5, screen_height),
+                (0, 0, 0),
+                0,
+                -0.12  # left safety wall
+            ],
+            [
+                pygame.Rect(0, screen_height - 35,
+                            screen_width - self.level_limit, 35),
+                (0, 0, 0),
+                0,
+                -0.12  #ground
+            ]
+        ]  #populate with platforms
 
         for platform in level_platforms:
             self.platforms.add(Platform.from_list(platform))
