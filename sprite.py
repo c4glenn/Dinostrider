@@ -55,13 +55,15 @@ class FacingSprite(Sprite):
         super().draw(win)
         if self.walk_count + 1 >= 27:
             self.walk_count = 0
+
+        win.blit(self._get_image(), self.rect.topleft)
+        self.walk_count += 1
+
+    def _get_image(self):
         if self.facing_left:
-            win.blit(self.images_left[self.walk_count // 3], self.rect.topleft)
-            self.walk_count += 1
+            return (self.images_left[self.walk_count // 3])
         else:
-            win.blit(self.images_right[self.walk_count // 3],
-                     self.rect.topleft)
-            self.walk_count += 1
+            return (self.images_right[self.walk_count // 3])
 
     def move(self):
         if self.bounds:
