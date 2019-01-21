@@ -1,12 +1,12 @@
 import pygame
 
-from Level import level
+from level import Level
 from game_platform import Platform
-from Slime import slime
-from sprite import vec
+from slime import Slime
+from sprite import VEC
 
 
-class LevelDemo(level):
+class LevelDemo(Level):
     def __init__(self, screen_height, screen_width):
         super().__init__(screen_height, screen_width)
         self.background = pygame.image.load('Images/bg.jpg')
@@ -50,9 +50,9 @@ class LevelDemo(level):
             self.platforms.add(Platform.from_list(platform))
 
         self.enemys.add(
-            slime(700, 441, vec(3, 0), pygame.Rect(600, 400, 200, 40)))
+            Slime(700, 441, VEC(3, 0), pygame.Rect(600, 400, 200, 40)))
         self.enemys.add(
-            slime(20, 181, vec(3, 0),
+            Slime(20, 181, VEC(3, 0),
                   pygame.Rect(0, screen_height - 400, 200, 40)))
 
     def get_player_start_position(self):

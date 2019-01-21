@@ -1,4 +1,4 @@
-from Enemies import Enemy
+from enemies import Enemy
 
 
 class Slime(Enemy):

@@ -2,8 +2,8 @@
 import pygame
 from player import Player
 from projectile import Projectile
-from Leveldemo import LevelDemo
-from Level1 import Level1
+from level_demo import LevelDemo
+from level1 import Level1
 from elliptical import Elliptical
 from test_buttons import Button
 

@@ -1,10 +1,10 @@
 import pygame
 
-from Level import level
+from level import Level
 from game_platform import Platform
 
 
-class Level1(level):
+class Level1(Level):
     def __init__(self, screen_height, screen_width):
         super().__init__(screen_height, screen_width)
         self.background = pygame.image.load(

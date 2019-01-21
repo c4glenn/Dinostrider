@@ -1,5 +1,5 @@
 from sprite import FacingSprite
-from sprite import vec
+from sprite import VEC
 
 STARTING_HEALTH = 3
 KNOCKBACK_DISTANCE = 20
@@ -13,7 +13,7 @@ class Enemy(FacingSprite):
                  height,
                  walking_path,
                  image_dir,
-                 vel=vec(0, 0)):
+                 vel=VEC(0, 0)):
         super().__init__(x, y, height, width, image_dir, vel)
         self.bounds = walking_path
         self.health = STARTING_HEALTH

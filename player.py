@@ -1,6 +1,6 @@
 import pygame
 from sprite import FacingSprite
-from sprite import vec
+from sprite import VEC
 
 
 class Player(FacingSprite):
@@ -8,9 +8,9 @@ class Player(FacingSprite):
         (startX, startY) = start
         super().__init__(startX, startY, 52, 52, 'Images/Dino')
         self.player_acc = 0.5
-        self.vel = vec(0, 0)
+        self.vel = VEC(0, 0)
         self.grav = 0.8
-        self.acc = vec(0, self.grav)
+        self.acc = VEC(0, self.grav)
         self.jump_count = 0
         self.standing = True
         self.footbox = (self.pos.x + 19, self.pos.y + 50, 16, 4)
@@ -49,19 +49,19 @@ class Player(FacingSprite):
             self.hearts -= 1
 
     def move_left(self):
-        self.acc = vec(0, self.grav)
+        self.acc = VEC(0, self.grav)
         self.acc.x = -self.player_acc
         self.facing_left = True
         self.standing = False
 
     def move_right(self):
-        self.acc = vec(0, self.grav)
+        self.acc = VEC(0, self.grav)
         self.acc.x = self.player_acc
         self.facing_left = False
         self.standing = False
 
     def stop(self):
-        self.acc = vec(0, self.grav)
+        self.acc = VEC(0, self.grav)
         self.standing = True
         self.walk_count = 0
 
@@ -100,7 +100,7 @@ class Player(FacingSprite):
 
         self.vel += self.acc
         self.pos += self.vel + self.acc
-        self.acc = vec(0, self.grav)
+        self.acc = VEC(0, self.grav)
 
         if self.pos.y > screen_height:
             self.lose_life()
@@ -132,7 +132,7 @@ class Player(FacingSprite):
 
     def reset(self):
         self.dead = False
-        self.pos = vec(self.startX, self.startY)
+        self.pos = VEC(self.startX, self.startY)
         self.hearts = 3
 
     def slide(self, distancex, distancey):
