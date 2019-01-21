@@ -1,12 +1,11 @@
 from sprite import FacingSprite
-import pygame
 from sprite import vec
 
 STARTING_HEALTH = 3
 KNOCKBACK_DISTANCE = 20
 
 
-class enemy(FacingSprite):
+class Enemy(FacingSprite):
     def __init__(self,
                  x,
                  y,

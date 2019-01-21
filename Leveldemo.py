@@ -6,7 +6,7 @@ from Slime import slime
 from sprite import vec
 
 
-class leveldemo(level):
+class LevelDemo(level):
     def __init__(self, screen_height, screen_width):
         super().__init__(screen_height, screen_width)
         self.background = pygame.image.load('Images/bg.jpg')

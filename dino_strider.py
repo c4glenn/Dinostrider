@@ -2,12 +2,8 @@
 import pygame
 from player import Player
 from projectile import Projectile
-from game_platform import Platform
-from Level import level
-from Leveldemo import leveldemo
-from Slime import slime
-from sprite import vec
-from Level1 import level1
+from Leveldemo import LevelDemo
+from Level1 import Level1
 from elliptical import Elliptical
 from test_buttons import Button
 
@@ -21,17 +17,18 @@ class Game:
         self.screen_height = 480
         self.score = 0
         self.levels = [
-            level1(self.screen_height, self.screen_width),
+            Level1(self.screen_height, self.screen_width),
+            LevelDemo(self.screen_height, self.screen_width)
         ]
-        self.level = self.levels[0]
+        self.level = self.levels[1]
         self.win = pygame.display.set_mode((self.screen_width,
                                             self.screen_height))
         pygame.display.set_caption("Dinostrider")
         self.ellip = Elliptical()
-        self.Rbutton = Button(2)
-        self.Lbutton = Button(4)
-        self.Jbutton = Button(1)
-        self.Sbutton = Button(3)
+        self.right_button = Button(2)
+        self.left_button = Button(4)
+        self.jump_button = Button(1)
+        self.shoot_button = Button(3)
 
         # music = pygame.mixer.music.load('Sound/music.wav')
         # pygame.mixer.music.play(-1)
@@ -48,7 +45,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return False
-            if self.Sbutton:
+            if self.shoot_button:
                 return True
 
     def end_screen(self, dino):
@@ -76,7 +73,6 @@ class Game:
                       (400 - (end_distance.get_width() / 2), 400))
         pygame.display.update()
         while True:
-            keys = pygame.key.get_pressed()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return False
@@ -108,10 +104,10 @@ class Game:
                 print(self.levels.index(self.level) + 1)
                 try:
                     self.level = self.levels[self.levels.index(self.level) + 1]
-                    dino.reset()
-                except:
-                    if self.end_screen(dino):
-                        return False
+                except IndexError:
+                    self.end_screen(dino)
+                    return False
+                dino.reset()
 
             if shoot_loop > 0:
                 shoot_loop += 1
@@ -131,9 +127,9 @@ class Game:
                                 draw_hitbox=not enemy.draw_hitbox)
                         dino.debug_draw(draw_hitbox=not dino.draw_hitbox)
 
-            if not self.Jbutton.get_state():
+            if not self.jump_button.get_state():
                 jump_flag = True
-            if self.Jbutton.get_state():
+            if self.jump_button.get_state():
                 if jump_flag:
                     dino.jump()
                     jump_flag = False
@@ -151,9 +147,9 @@ class Game:
 
                 hits = pygame.sprite.spritecollide(bullet, self.level.enemys,
                                                    False)
-                for i in range(0, len(hits)):
+                for hit in hits:
                     self.score += 5
-                    hits[i].hit()
+                    hit.hit()
                     remove = True
 
                 if remove:
@@ -161,9 +157,9 @@ class Game:
 
             keys = pygame.key.get_pressed()
 
-            if keys[pygame.K_LEFT] or self.Lbutton.get_state():
+            if keys[pygame.K_LEFT] or self.left_button.get_state():
                 dino.move_left()
-            elif keys[pygame.K_RIGHT] or self.Rbutton.get_state():
+            elif keys[pygame.K_RIGHT] or self.right_button.get_state():
                 dino.move_right()
             else:
                 dino.stop()
@@ -173,8 +169,8 @@ class Game:
             if keys[pygame.K_a]:
                 print(dino.pos.x - self.level.world_shift_x)
 
-            if (keys[pygame.K_SPACE] or
-                    self.Sbutton.get_state()) and shoot_loop == 0 and dino.gun:
+            if (keys[pygame.K_SPACE] or self.shoot_button.get_state()) and (
+                    shoot_loop == 0) and dino.gun:
                 if dino.facing_left:
                     facing = -1
                 else:
@@ -203,15 +199,15 @@ class Game:
 
             hits = pygame.sprite.spritecollide(dino, self.level.platforms,
                                                False)
-            for i in range(0, len(hits)):
-                dino.touch_down(hits[i].rect, hits[i].friction)
+            for hit in hits:
+                dino.touch_down(hit.rect, hit.friction)
 
             hits = pygame.sprite.spritecollide(dino, self.level.enemys, False)
-            for i in range(0, len(hits)):
-                dino.hit(hits[i])
-                if dino.rect.bottom <= (
-                        hits[i].rect.centery - (hits[i].rect.height // 4)
-                ) and dino.rect.bottom >= hits[i].rect.top:
+            for hit in hits:
+                dino.hit(hit)
+                if dino.rect.bottom <= (hit.rect.centery -
+                                        (hit.rect.height // 4)
+                                        ) and dino.rect.bottom >= hit.rect.top:
                     self.score += 20
             if dino.dead:
                 self.level.shift_world(0 - self.level.world_shift_x,
@@ -224,8 +220,8 @@ class Game:
             pygame.display.update()
 
 
-game = Game()
-if game.start_screen():
-    game.game_loop()
+GAME = Game()
+if GAME.start_screen():
+    GAME.game_loop()
 pygame.quit()
-game.ellip.stop()
+GAME.ellip.stop()

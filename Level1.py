@@ -2,11 +2,9 @@ import pygame
 
 from Level import level
 from game_platform import Platform
-from Slime import slime  #or whatever enemy ur using
-from sprite import vec
 
 
-class level1(level):
+class Level1(level):
     def __init__(self, screen_height, screen_width):
         super().__init__(screen_height, screen_width)
         self.background = pygame.image.load(

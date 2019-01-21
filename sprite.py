@@ -1,18 +1,19 @@
 import glob
 import pygame
 
-vec = pygame.math.Vector2
+VEC = pygame.math.Vector2
 
 
 class Sprite(pygame.sprite.Sprite):
-    def __init__(self, start_x, start_y, height, width, vel=vec(0, 0)):
+    def __init__(self, start_x, start_y, height, width, vel=VEC(0, 0)):
         #pygame.sprite.Sprite.__init__(self)
         super().__init__()
-        self.pos = vec(start_x, start_y)
+        self.pos = VEC(start_x, start_y)
         self.rect = pygame.Rect(start_x, start_y, width, height)
         self.bounds = None
         self.draw_bounds = False
         self.draw_hitbox = False
+        self.vel = vel
 
     def debug_draw(self, draw_bounds=False, draw_hitbox=False):
         self.draw_bounds = draw_bounds
@@ -42,14 +43,13 @@ class FacingSprite(Sprite):
                  height,
                  width,
                  imagesDir=None,
-                 vel=vec(0, 0)):
+                 vel=VEC(0, 0)):
         super().__init__(start_x, start_y, height, width, vel)
         if imagesDir:
             self.images_right = self.load(imagesDir + '/Right/*.png')
             self.images_left = self.load(imagesDir + '/Left/*.png')
         self.facing_left = False
         self.walk_count = 0
-        self.vel = vel
 
     def draw(self, win):
         super().draw(win)
@@ -61,9 +61,9 @@ class FacingSprite(Sprite):
 
     def _get_image(self):
         if self.facing_left:
-            return (self.images_left[self.walk_count // 3])
+            return self.images_left[self.walk_count // 3]
         else:
-            return (self.images_right[self.walk_count // 3])
+            return self.images_right[self.walk_count // 3]
 
     def move(self):
         if self.bounds:
