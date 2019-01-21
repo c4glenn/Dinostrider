@@ -28,7 +28,7 @@ class Sprite(pygame.sprite.Sprite):
         total = []
         files = glob.glob(path)
         for file in files:
-            total.append(pygame.image.load(file).convert_alpha())
+            total.append(pygame.image.load(file))
         return total
 
     def update_rectangle(self):
