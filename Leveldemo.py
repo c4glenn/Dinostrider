@@ -13,6 +13,7 @@ class leveldemo(level):
         self.platforms.empty()
         self.enemys.empty()
         self.level_limit = -700
+        self.dino_gun = True
         half_screen_width = self.screen_width // 2
         level_platforms = [
             [
