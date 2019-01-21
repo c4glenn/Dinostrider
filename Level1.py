@@ -14,7 +14,7 @@ class level1(level):
         self.platforms.empty()
         self.enemys.empty()
         self.dino_gun = False  # it shouldn't have a gun
-        self.level_limit = -2900  #changes per level
+        self.level_limit = -3530  #changes per level
         level_platforms = [
             [
                 pygame.Rect(-5, 0, 5, screen_height),
@@ -23,7 +23,7 @@ class level1(level):
                 -0.12  # left safety wall
             ],
             [
-                pygame.Rect(0, screen_height - 35, 1960, 35),
+                pygame.Rect(0, screen_height - 40, 1960, 40),
                 (0, 0, 0),
                 0,
                 -0.12  # ground
@@ -77,7 +77,31 @@ class level1(level):
                 -0.12  # air platform
             ],
             [
-                pygame.Rect(2780, screen_height - 40,
+                pygame.Rect(2880, screen_height - 40, 200, 40),
+                (0, 0, 0),
+                0,
+                -0.12  # ground
+            ],
+            [
+                pygame.Rect(3047, screen_height - 130, 60, 20),
+                (0, 0, 0),
+                0,
+                -0.12  #first air block
+            ],
+            [
+                pygame.Rect(3200, screen_height - 180, 60, 20),
+                (0, 0, 0),
+                0,
+                -0.12  #second air block
+            ],
+            [
+                pygame.Rect(3360, screen_height - 230, 100, 205),
+                (0, 0, 0),
+                0,
+                -0.12  #high ground
+            ],
+            [
+                pygame.Rect(3360, screen_height - 40,
                             screen_width - self.level_limit, 40),
                 (0, 0, 0),
                 0,
