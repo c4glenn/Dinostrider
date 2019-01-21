@@ -50,9 +50,9 @@ class leveldemo(level):
             self.platforms.add(Platform.from_list(platform))
 
         self.enemys.add(
-            slime(700, 445, vec(3, 0), pygame.Rect(600, 400, 200, 40)))
+            slime(700, 441, vec(3, 0), pygame.Rect(600, 400, 200, 40)))
         self.enemys.add(
-            slime(20, 185, vec(3, 0),
+            slime(20, 181, vec(3, 0),
                   pygame.Rect(0, screen_height - 400, 200, 40)))
 
     def get_player_start_position(self):
