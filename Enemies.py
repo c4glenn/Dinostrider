@@ -7,9 +7,16 @@ KNOCKBACK_DISTANCE = 20
 
 
 class enemy(FacingSprite):
-    def __init__(self, x, y, width, height, path, vel=vec(0, 0)):
-        super().__init__(x, y, height, width, 'Images/Goblin', vel)
-        self.bounds = path
+    def __init__(self,
+                 x,
+                 y,
+                 width,
+                 height,
+                 walking_path,
+                 image_dir,
+                 vel=vec(0, 0)):
+        super().__init__(x, y, height, width, image_dir, vel)
+        self.bounds = walking_path
         self.health = STARTING_HEALTH
 
     def die(self):
