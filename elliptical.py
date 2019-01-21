@@ -3,9 +3,9 @@ import threading
 
 try:
     import explorerhat
-    hardware = True
-except:
-    hardware = False
+    HARDWARE = True
+except ImportError:
+    HARDWARE = False
 
 DIST_PER_ROTATION_M = (2.0 * 3.1415 * 19.0) / 100.0
 
@@ -13,7 +13,6 @@ DIST_PER_ROTATION_M = (2.0 * 3.1415 * 19.0) / 100.0
 class Elliptical(object):
     def _read_sensor(self):
         return explorerhat.input.three.read()
-
 
     def _hardware_loop(self):
         while not self.thread.stopped:
@@ -28,7 +27,7 @@ class Elliptical(object):
             while self._read_sensor():
                 if self.thread.stopped:
                     return
-            while self._read_sensor() == False:
+            while not self._read_sensor():
                 if self.thread.stopped:
                     return
 
@@ -39,9 +38,9 @@ class Elliptical(object):
 
     def __init__(self):
         self.num_rotations = 0
-        self.speed_RPM = 0
+        self.speed_RPM = 0  #pylint:disable=invalid-name
         self.thread = None
-        if hardware:
+        if HARDWARE:
             self.thread = threading.Thread(target=self._hardware_loop)
             self.thread.stopped = False
             self.thread.start()
@@ -52,19 +51,15 @@ class Elliptical(object):
     def get_distance(self):
         return self.num_rotations * DIST_PER_ROTATION_M
 
-
-
-
     def stop(self):
-        if hardware:
+        if HARDWARE:
             self.thread.stopped = True
 
 
-
 if __name__ == "__main__":
-    elliptical = Elliptical()
+    ELLIPTICAL = Elliptical()
     print("Init finished")
     while True:
         print("Speed: {0} Distance {1}".format(
-            int(elliptical.get_speed()), int(elliptical.get_distance())))
+            int(ELLIPTICAL.get_speed()), int(ELLIPTICAL.get_distance())))
         time.sleep(1)

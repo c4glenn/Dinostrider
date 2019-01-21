@@ -5,8 +5,8 @@ from sprite import VEC
 
 class Player(FacingSprite):
     def __init__(self, start):
-        (startX, startY) = start
-        super().__init__(startX, startY, 52, 52, 'Images/Dino')
+        (start_x, start_y) = start
+        super().__init__(start_x, start_y, 52, 52, 'Images/Dino')
         self.player_acc = 0.5
         self.vel = VEC(0, 0)
         self.grav = 0.8
@@ -21,8 +21,8 @@ class Player(FacingSprite):
         self.friction = -0.12
         self.hearts = 3
         self.lives = 3
-        self.startX = startX
-        self.startY = startY
+        self.start_x = start_x
+        self.start_y = start_y
         self.bounds = pygame.Rect(0, 0, 800, 480)
         self.dead = False
 
@@ -93,7 +93,7 @@ class Player(FacingSprite):
             self.vel.y = 0
             self.pos.y = platform_rect.bottom + self.rect.height
 
-    def update_location(self, screen_height, screen_width):
+    def update_location(self, screen_height):
         self.acc.y = self.grav
 
         self.acc.x += self.vel.x * self.friction
@@ -132,7 +132,7 @@ class Player(FacingSprite):
 
     def reset(self):
         self.dead = False
-        self.pos = VEC(self.startX, self.startY)
+        self.pos = VEC(self.start_x, self.start_y)
         self.hearts = 3
 
     def slide(self, distancex, distancey):
