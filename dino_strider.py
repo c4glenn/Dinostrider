@@ -53,6 +53,7 @@ class Game:
 
     def end_screen(self, dino):
         pygame.draw.rect(self.win, (0, 0, 0), (0, 0, 800, 480))
+        pygame.display.update()
         end_text = pygame.font.SysFont('Arial', 50).render(
             'You Win', 1, (255, 0, 0))
         end_score = pygame.font.SysFont('Arial', 20).render(
@@ -82,8 +83,6 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         return False
-            if self.Sbutton:
-                return False
 
     def game_loop(self):
         """ This is the main game loop """
@@ -106,6 +105,7 @@ class Game:
                 self.level.shift_world(5, 0)
                 dino.slide(5, 0)
             if self.level.world_shift_x <= self.level.level_limit:
+                print(self.levels.index(self.level) + 1)
                 try:
                     self.level = self.levels[self.levels.index(self.level) + 1]
                     dino.reset()
