@@ -5,7 +5,7 @@ from projectile import Projectile
 from level_demo import LevelDemo
 from level1 import Level1
 from elliptical import Elliptical
-from test_buttons import Button
+from hardware_buttons import Button
 
 
 class Game:
@@ -184,7 +184,7 @@ class Game:
                     bullet_sound.play()
                 shoot_loop = 1
 
-            dino.update_location(self.screen_height, self.screen_width)
+            dino.update_location(self.screen_height)
 
             self.win.blit(self.level.background, (0, 0))
             text = score_font.render('Score:' + str(self.score), 1, (0, 0, 0))
